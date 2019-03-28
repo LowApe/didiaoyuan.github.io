@@ -1,0 +1,1152 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="多线程" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="仙人掌的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/love.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="上一篇 JSON学习 中介绍了 JSON 对象的结构，如何解析 JSON 数据，但是我们的 JSON 数据是本地已经转换的 String 类型，现在我们处理网上的 JSON 数据,用到了网上的操作，必然要进行网络的连接，讲到网络部分，有必然使用到多线程，所以本篇侧重于介绍多线程部分。">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" AsyncTask 和 AsyncTaskLoader 的使用">
+<meta property="og:url" content="https://lowape.github.io/didiaoyuan.github.io/2017/05/07/AsyncTask-和-AsyncTaskLoader-的使用/index.html">
+<meta property="og:site_name" content="仙人掌的博客">
+<meta property="og:description" content="上一篇 JSON学习 中介绍了 JSON 对象的结构，如何解析 JSON 数据，但是我们的 JSON 数据是本地已经转换的 String 类型，现在我们处理网上的 JSON 数据,用到了网上的操作，必然要进行网络的连接，讲到网络部分，有必然使用到多线程，所以本篇侧重于介绍多线程部分。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-a9c2c78edc82d60f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-b57e3a20b2b4fc93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/200">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-ed038291380333b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/640">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-1554d2827be13e59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300">
+<meta property="og:updated_time" content="2017-10-30T02:45:25.887Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=" AsyncTask 和 AsyncTaskLoader 的使用">
+<meta name="twitter:description" content="上一篇 JSON学习 中介绍了 JSON 对象的结构，如何解析 JSON 数据，但是我们的 JSON 数据是本地已经转换的 String 类型，现在我们处理网上的 JSON 数据,用到了网上的操作，必然要进行网络的连接，讲到网络部分，有必然使用到多线程，所以本篇侧重于介绍多线程部分。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2556431-a9c2c78edc82d60f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lowape.github.io/didiaoyuan.github.io/2017/05/07/AsyncTask-和-AsyncTaskLoader-的使用/"/>
+
+
+
+
+
+  <title>  AsyncTask 和 AsyncTaskLoader 的使用 | 仙人掌的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?098f4976c7c8b06e2a89213a1bd8b958";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仙人掌的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">喜欢与世无争的清静</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lowape.github.io/didiaoyuan.github.io/2017/05/07/AsyncTask-和-AsyncTaskLoader-的使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="didiaoyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仙人掌的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                 AsyncTask 和 AsyncTaskLoader 的使用
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-07T17:17:15+08:00">
+                2017-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/07/AsyncTask-和-AsyncTaskLoader-的使用/" class="leancloud_visitors" data-flag-title=" AsyncTask 和 AsyncTaskLoader 的使用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>上一篇 <a href="">JSON学习</a> 中介绍了 JSON 对象的结构，如何解析 JSON 数据，但是我们的 JSON 数据是本地已经转换的 String 类型，现在我们处理网上的 JSON 数据,用到了网上的操作，必然要进行网络的连接，讲到网络部分，有必然使用到多线程，所以本篇侧重于介绍多线程部分。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="为什么要使用多线程？"><a href="#为什么要使用多线程？" class="headerlink" title="为什么要使用多线程？"></a>为什么要使用多线程？</h2><p>我们最初的 Android 学习中，默认都是在主线程( MainThread )进行操作的,主线程也叫做 UI 线程，一般的添加控件之类的操作都是主线程运行的，下面的图可以很好的说明，我们一般的绘图操作，点击按钮的操作，网络请求…都是在主线程上运行，但是这些操作的会被放到队列中，顺序执行，每次执行一个事件。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2556431-a9c2c78edc82d60f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="主线程 "></p>
+<p>然而我们为什么要使用多线程，我们可能遇到过这样的情况，当我们访问一些 APP 的时候，在做一些网络请求的时候，界面会不动，当你点击界面上的按钮时，会出现是否停止响应的按钮。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2556431-b57e3a20b2b4fc93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/200" alt="结束未响应程序|center"></p>
+<p>为什么会出现这种情况？那是因为我们的网络请求很可能写到主线程上，当你进行网络请求时，应用可以需要一段时间去连接，获取，解析数据，但是同时你又多次按下了按钮，这些操作会出现到你的主线程队列上，但是应用并没有执行你的操作，以至于导致线程阻塞，一段时间后 Android 系统会显示上图的提示。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2556431-ed038291380333b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/640" alt="主线程"></p>
+<blockquote>
+<p>所以 Android 有个重要原则：<strong>不能把网络请求放到主线程</strong>  ，也就是<strong>不能阻塞 UI 线程</strong>，所以这个问题的解决方案就是使用<strong>多线程</strong>，让各自的操作到各自的线程中进行，网络访问一个线程，数据处理一个线程….这里我们只需要一个后台线程，用来处理网络请求。关于<strong>进程和线程</strong>可以访问<a href="http://developer.android.youdaxue.com/guide/components/processes-and-threads.html?utm_source=udacity&amp;utm_medium=course&amp;utm_campaign=android_basics" target="_blank" rel="external">官方链接</a></p>
+</blockquote>
+<h2 id="AsyncTask-处理多线程"><a href="#AsyncTask-处理多线程" class="headerlink" title="AsyncTask 处理多线程"></a>AsyncTask 处理多线程</h2><p>Android为了降低开发难度，提供了AsyncTask。AsyncTask就是一个封装过的后台任务类，就是异步任务。它是在 Android  上线程之间进行线程和消息传递的抽象类，并不适用与任何情况，在使用的情况下，考虑当前的使用背景。<br>先来介绍一下 AyncTask 的基本用法。AyncTask 是一个抽象类，要使用这个抽象类需要建立一个子类去继承它，在继承这个类的同时需要规定三个泛型参数，我们为了便于理解，我们把着三个泛型参数放到方法之后讲解，先来讲解 AyncTask 的四个方法：</p>
+<ol>
+<li><p><strong>onPreExcute()：</strong><br><strong>UI 线程中调用</strong> 该方法在后台任务执行之前调用，一般用于界面的初始化操作，如：显示一个进度条。</p>
+</li>
+<li><p><strong>doInBackground(Params…)：</strong><br><strong>后台线程中调用</strong> ，该方法用于处理耗时操作，操作一旦完成既可以通过 return 来返回执行结果。用过要在该方法中更新 UI 可以手动调用 publishProgres(Progress…) 方法来完成。</p>
+</li>
+<li><p><strong>onProgressUpdate(Progress…)：</strong><br><strong>UI 线程中调用</strong> 利用该方法可以对 UI 进行相应的更新。该方法的使用必须在 doInBackground() 方法使用 publishProgres() 方法</p>
+</li>
+<li><p><strong>onPostExcute(Result)：</strong><br><strong>UI 线程中调用</strong>  在doInBackground(Params…)中返回的数据会作为参数传递到该方法中。 可以利用后台线程返回的参数进行 UI 操作。</p>
+</li>
+</ol>
+<p>现在我们在讲一讲 AyncTask 中的三个泛型参数，配合上述的方法，你会很快找到对应的规律和使用方法。</p>
+<ul>
+<li>Params：在执行 AyncTask 需要传入的参数，用于后台任务使用。对应 doInBackground()</li>
+<li>Progress：后台任务执行时,如果需要在界面上显示当前的进度。对应onProgressUpdate()</li>
+<li>Result：当任务完毕的情况下，如果需要对结果进行返回，则使用该返回值类型,对应方法onPostExcute()</li>
+</ul>
+<p>##　练习操作<br>＞这个项目是获取网上地震数据并进行显示的应用。效果图如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2556431-1554d2827be13e59.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300" alt="效果图"></p>
+<p>先顶一个</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">QueryUtils</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">QueryUtils</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line">	<span class="comment">//该方法进行网络连接，获取数据，解析数据</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Info&gt; <span class="title">fetchEarthquakeDatas</span><span class="params">(String requestUrl)</span> <span class="keyword">throws</span> MalformedURLException </span>&#123;</div><div class="line"></div><div class="line">        <span class="comment">/*调用方法处理正确的url*/</span></div><div class="line">        URL url = createUrl(requestUrl);</div><div class="line">         <span class="comment">/*定义一个json响应的变量*/</span></div><div class="line">        String jsonResponse = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">/*调用一个方法获取jsonResponse*/</span></div><div class="line">            jsonResponse = makeHttpRequest(url);</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        <span class="comment">/*extractFeatureFromJson一个提取json数据的方法*/</span></div><div class="line">        List&lt;Info&gt; listItem = extractFeatureFromJson(jsonResponse);</div><div class="line">        <span class="keyword">return</span> listItem;</div><div class="line">    &#125;</div><div class="line">	<span class="comment">/*创建一个方法，处理传入的Url*/</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> URL <span class="title">createUrl</span><span class="params">(String stringUrl)</span> </span>&#123;</div><div class="line">        URL url = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            url = <span class="keyword">new</span> URL(stringUrl);</div><div class="line">        &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> url;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/*创建一个方法，连接网络获取jsonResponse*/</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">makeHttpRequest</span><span class="params">(URL url)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        String jsonResponse = <span class="string">""</span>;</div><div class="line">        <span class="keyword">if</span> (url == <span class="keyword">null</span>) <span class="keyword">return</span> jsonResponse;</div><div class="line">        <span class="comment">/*初始化网络连接*/</span></div><div class="line">        HttpURLConnection urlConnection = <span class="keyword">null</span>;</div><div class="line">        <span class="comment">/*初始化输入流,因为返回的是一个字符串类型，所以要读取数据*/</span></div><div class="line">        InputStream inputStream = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            urlConnection = (HttpURLConnection) url.openConnection();</div><div class="line">            urlConnection.setReadTimeout(<span class="number">10000</span>);</div><div class="line">            urlConnection.setConnectTimeout(<span class="number">15000</span>);</div><div class="line">            urlConnection.setRequestMethod(<span class="string">"GET"</span>);</div><div class="line">            urlConnection.connect();</div><div class="line">            <span class="keyword">if</span> (urlConnection.getResponseCode() == <span class="number">200</span>) &#123;</div><div class="line">                Log.i(TAG_LOG, <span class="string">"启动网络服务成功"</span>);</div><div class="line">                Log.v(<span class="string">"MainActivity"</span>, String.valueOf(urlConnection.getResponseCode()));</div><div class="line">                 <span class="comment">/*得到他的输入流，也就是读取*/</span></div><div class="line">                inputStream = urlConnection.getInputStream();</div><div class="line">                <span class="comment">/*调用一个方法，读取数据*/</span></div><div class="line">                jsonResponse = readFromStream(inputStream);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                Log.i(TAG_LOG, <span class="string">"启动网络服务失败"</span>);</div><div class="line">                Log.v(<span class="string">"MainActivity"</span>, String.valueOf(urlConnection.getResponseCode()));</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (urlConnection != <span class="keyword">null</span>) urlConnection.disconnect();</div><div class="line">            <span class="keyword">if</span> (inputStream != <span class="keyword">null</span>) &#123;</div><div class="line">                inputStream.close();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> jsonResponse;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="comment">/*创建一个方法读取输入流的数据*/</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">readFromStream</span><span class="params">(InputStream inputStream)</span> </span>&#123;</div><div class="line">    <span class="comment">/*字符串的拼接*/</span></div><div class="line">        StringBuilder output = <span class="keyword">new</span> StringBuilder();</div><div class="line">        <span class="keyword">if</span> (inputStream != <span class="keyword">null</span>) &#123;</div><div class="line">            InputStreamReader inputStreamReader = <span class="keyword">new</span> InputStreamReader(inputStream, Charset.forName(<span class="string">"UTF-8"</span>));</div><div class="line">            BufferedReader reader = <span class="keyword">new</span> BufferedReader(inputStreamReader);</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                String line = reader.readLine();</div><div class="line">                <span class="keyword">while</span> (line != <span class="keyword">null</span>) &#123;</div><div class="line">                    output.append(line);</div><div class="line">                    line = reader.readLine();</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">/*如果输入流不为空，进行数据读取转换为字符串类型*/</span></div><div class="line">        <span class="keyword">return</span> output.toString(); <span class="comment">/*返回字符串*/</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="comment">/*创建一个提取json数据的方法*/</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> List&lt;Info&gt; <span class="title">extractFeatureFromJson</span><span class="params">(String earthquakeJSON)</span> <span class="keyword">throws</span> MalformedURLException </span>&#123;</div><div class="line">        <span class="keyword">if</span> (TextUtils.isEmpty(earthquakeJSON)) <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">         <span class="comment">/*因为返回类型是List&lt;Info&gt;,所以新建一个对象*/</span></div><div class="line">        List&lt;Info&gt; listItem = <span class="keyword">new</span> ArrayList&lt;Info&gt;();</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            JSONObject root = <span class="keyword">new</span> JSONObject(earthquakeJSON);</div><div class="line">            JSONArray featureArray = root.getJSONArray(<span class="string">"features"</span>);</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; featureArray.length(); i++) &#123;</div><div class="line">                JSONObject feature = featureArray.getJSONObject(i);</div><div class="line">                JSONObject properties = feature.getJSONObject(<span class="string">"properties"</span>);</div><div class="line">                Double mag = properties.getDouble(<span class="string">"mag"</span>);</div><div class="line">                String place = properties.getString(<span class="string">"place"</span>);</div><div class="line">                Long time = properties.getLong(<span class="string">"time"</span>);</div><div class="line">                String urlString = properties.getString(<span class="string">"url"</span>);</div><div class="line">                URL url = <span class="keyword">new</span> URL(urlString);</div><div class="line">                listItem.add(<span class="keyword">new</span> Info(mag, place, time, url));</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (JSONException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> listItem;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面 QueryUtils 类 一个网络请求的类，我们需要使用 AsyncTask 内部类，调用我们这个网络访问类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*创建一个AsyncTask的内部类*/</span></div><div class="line"></div><div class="line">   <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">EarthAsyncTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">Void</span>, <span class="title">List</span>&lt;<span class="title">Info</span>&gt;&gt; </span>&#123;</div><div class="line">       <span class="meta">@Override</span></div><div class="line">       <span class="function"><span class="keyword">protected</span> List&lt;Info&gt; <span class="title">doInBackground</span><span class="params">(String... urls)</span> </span>&#123;</div><div class="line">           Log.i(TAG_LOG, <span class="string">"doInBackground()"</span>);</div><div class="line">           <span class="keyword">if</span> (urls.length &lt; <span class="number">1</span> || urls[<span class="number">0</span>] == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">           List&lt;Info&gt; result = <span class="keyword">null</span>;</div><div class="line">           <span class="keyword">try</span> &#123;     </div><div class="line">               result = QueryUtils.fetchEarthquakeDatas(urls[<span class="number">0</span>]);</div><div class="line">           &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;</div><div class="line">               e.printStackTrace();</div><div class="line">           &#125;</div><div class="line">           <span class="keyword">return</span> result;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="meta">@Override</span></div><div class="line">       <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(List&lt;Info&gt; result)</span> </span>&#123;</div><div class="line">       <span class="comment">/* 清除之前地震数据的适配器*/</span></div><div class="line"></div><div class="line">           adapter.clear();</div><div class="line">           <span class="comment">/*  add与addALL的区别在于add方法即便加入一个list也只是保存其中一条，addAll 保存全部*/</span></div><div class="line">           <span class="keyword">if</span> (result != <span class="keyword">null</span> &amp;&amp; !result.isEmpty()) adapter.addAll(result);</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h2 id="为什么要使用-AsyncTaskLoader-？"><a href="#为什么要使用-AsyncTaskLoader-？" class="headerlink" title="为什么要使用 AsyncTaskLoader ？"></a>为什么要使用 AsyncTaskLoader ？</h2><p>当我们旋转屏幕的时候，会改变设备配置。<strong>设备配置</strong>是用来描述设备当前状态的一系列特征。当我们旋转屏幕时，我们重新创建了一个新的活动，相当于创建了两个 AsyncTask ，可能这个问题看起来没什么问题，我们都知道我们手机有内存限制，当我们频繁的旋转设备，就会造成大量的 AsyncTask 的资源占用，还有就是每次设备更改时，都会访问一次 Internet ，这不仅仅是造成不必要的流量丢失，还造成数据利用率极低。需要注意的，当 AsyncTask 数量增加时，Android 系统并不会自动释放不用的资源，因为 AsyncTask 是原始<strong>活动的</strong>的内部类，所以只有 AsyncTask 结束才会统一释放资源，如何处理上述所说的问题，这里就用到 <strong>Loader</strong></p>
+<p>关于 Loader 介绍，我们可以查看<a href="http://developer.android.youdaxue.com/guide/components/loaders.html?utm_source=udacity&amp;utm_medium=course&amp;utm_campaign=android_basics" target="_blank" rel="external">官方文档</a></p>
+<p>在上述的项目中，我们如何加入 AsyncTaskLoader 来处理设备配置的问题？<br>首先，我们先创建一个子类继承 AsyncTaskLoader 并实现一个最重要的方法<strong>loadInBackground()</strong>，该方法和<strong>doInBackground()</strong>原理相同</p>
+<p>其次，创建完这个 AsyncTaskLoader 的子类，我们需要用到一个 <strong>LoaderManager</strong> 顾名思义，它是管理我们 Loader 的类，要想让我们的类使用 Loader 就必须使用 LoaderManager.LoaderCallbacks<e> 接口，这样 LoaderManager 就可以通知我们创建 加载器 Loader 。<br>并且实现三个方法</e></p>
+<ol>
+<li><strong>onCreateLoader（）</strong><br>当loadermanager调用initLoader()时, 首先检查指定的id是否存在，如果不存在才会触发该方法，通过该方法才能创建一个loader</li>
+<li><strong>onLoadFinished（）</strong><br>当一个加载器 完成了它的装载过程后被调用</li>
+<li><strong>onLoaderReset（）</strong><br>当一个加载器 被重置而什其数据无效时被调用</li>
+</ol>
+<p>不多说直接贴代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EarthquakeActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> <span class="keyword">implements</span> <span class="title">android</span>.<span class="title">app</span>.<span class="title">LoaderManager</span>.<span class="title">LoaderCallbacks</span>&lt;<span class="title">List</span>&lt;<span class="title">Info</span>&gt;&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> TextView emptyTextView;</div><div class="line">    <span class="keyword">private</span> InfoAdapter adapter;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String REQUEST_URL = <span class="string">"https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&amp;orderby=time&amp;minmag=5&amp;limit=10"</span>;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        Log.i(TAG_LOG, <span class="string">"onCreate()"</span>);</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.earthquake_activity);</div><div class="line">        emptyTextView = (TextView) findViewById(R.id.empty_tv);</div><div class="line">      <span class="comment">/*获取listView*/</span></div><div class="line">        ListView earthquakeListView = (ListView) findViewById(R.id.list);</div><div class="line">     <span class="comment">/*将空视图和list进行挂接，实现当加载不出来时，显示提示文本*/</span></div><div class="line">        earthquakeListView.setEmptyView(emptyTextView);</div><div class="line">        adapter = <span class="keyword">new</span> InfoAdapter(<span class="keyword">this</span>, <span class="keyword">new</span> ArrayList&lt;Info&gt;());</div><div class="line"><span class="comment">/*绑定适配器*/</span></div><div class="line">        earthquakeListView.setAdapter(adapter);</div><div class="line"><span class="comment">/*判断是否联网*/</span></div><div class="line">        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);</div><div class="line">        NetworkInfo activeNetWork = cm.getActiveNetworkInfo();</div><div class="line">        <span class="keyword">if</span> (activeNetWork != <span class="keyword">null</span> &amp;&amp; activeNetWork.isConnectedOrConnecting()) &#123; <span class="comment">/*初始化loader*/</span></div><div class="line">            getLoaderManager().initLoader(<span class="number">0</span>, <span class="keyword">null</span>, <span class="keyword">this</span>); <span class="comment">/*添加项目点击监听器*/</span></div><div class="line">            Log.i(TAG_LOG, <span class="string">"initLoader()"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            View loading_progress_Bar = findViewById(R.id.loading_progressbar);</div><div class="line">            loading_progress_Bar.setVisibility(View.GONE);</div><div class="line">            emptyTextView.setText(<span class="string">"no Internet"</span>);</div><div class="line">        &#125;</div><div class="line">        earthquakeListView.setOnItemClickListener(<span class="keyword">new</span> AdapterView.OnItemClickListener() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onItemClick</span><span class="params">(AdapterView&lt;?&gt; adapterView, View view, <span class="keyword">int</span> i, <span class="keyword">long</span> l)</span> </span>&#123; <span class="comment">/*查找单机的当前地震*/</span></div><div class="line">                Info currentInfo = (Info) adapter.getItem(i); <span class="comment">/*获取uri对象???*/</span></div><div class="line">                Uri infoUri = Uri.parse(currentInfo.getURL().toString()); <span class="comment">/*创建一个新的Intent*/</span></div><div class="line">                Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW, infoUri);</div><div class="line">                startActivity(intent);</div><div class="line">            &#125;</div><div class="line">        &#125;); <span class="comment">/* 实例化AsyncTask 并执行*/</span></div><div class="line">        EarthAsyncTask task = <span class="keyword">new</span> EarthAsyncTask();</div><div class="line">        task.execute(REQUEST_URL);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> android.content.Loader&lt;List&lt;Info&gt;&gt; onCreateLoader(<span class="keyword">int</span> i, Bundle bundle) &#123;</div><div class="line">        Log.i(TAG_LOG, <span class="string">"onCreateLoader()"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> EarthquakeLoader(<span class="keyword">this</span>, REQUEST_URL);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoadFinished</span><span class="params">(android.content.Loader&lt;List&lt;Info&gt;&gt; loader, List&lt;Info&gt; infos)</span> </span>&#123;</div><div class="line">        Log.i(TAG_LOG, <span class="string">"onLoadFinished()"</span>);</div><div class="line">        adapter.clear(); <span class="comment">/* 如果存在 &#123;@link Earthquake&#125; 的有效列表，则将其添加到适配器的 数据集。这将触发 ListView 执行更新。 add与addALL的区别在于add方法即便加入一个list也只是保存其中一条，addAll 保存全部*/</span></div><div class="line">        <span class="keyword">if</span> (infos != <span class="keyword">null</span> &amp;&amp; !infos.isEmpty()) adapter.addAll(infos);</div><div class="line">        View loading_progress_Bar = findViewById(R.id.loading_progressbar);</div><div class="line">        loading_progress_Bar.setVisibility(View.GONE);</div><div class="line">        emptyTextView.setText(<span class="string">"no Text"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLoaderReset</span><span class="params">(android.content.Loader&lt;List&lt;Info&gt;&gt; loader)</span> </span>&#123;</div><div class="line">        Log.i(TAG_LOG, <span class="string">"onLoaderReset()"</span>);</div><div class="line">        adapter.clear();</div><div class="line">    &#125; <span class="comment">/*创建一个AsyncTask的内部类*/</span></div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">EarthAsyncTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">Void</span>, <span class="title">List</span>&lt;<span class="title">Info</span>&gt;&gt; </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> List&lt;Info&gt; <span class="title">doInBackground</span><span class="params">(String... urls)</span> </span>&#123;</div><div class="line">            Log.i(TAG_LOG, <span class="string">"doInBackground()"</span>);</div><div class="line">            <span class="keyword">if</span> (urls.length &lt; <span class="number">1</span> || urls[<span class="number">0</span>] == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">            List&lt;Info&gt; result = <span class="keyword">null</span>;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                Log.i(TAG_LOG, <span class="string">"调用doInBackground+fetchEarthquakeDatas"</span>);</div><div class="line">                result = QueryUtils.fetchEarthquakeDatas(urls[<span class="number">0</span>]);</div><div class="line">            &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> result;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(List&lt;Info&gt; result)</span> </span>&#123; <span class="comment">/* 清除之前地震数据的适配器*/</span></div><div class="line">            Log.i(TAG_LOG, <span class="string">"onPostExecute()"</span>);</div><div class="line">            adapter.clear(); <span class="comment">/* 如果存在 &#123;@link Earthquake&#125; 的有效列表，则将其添加到适配器的 数据集。这将触发 ListView 执行更新。 add与addALL的区别在于add方法即便加入一个list也只是保存其中一条，addAll 保存全部*/</span></div><div class="line">            <span class="keyword">if</span> (result != <span class="keyword">null</span> &amp;&amp; !result.isEmpty()) adapter.addAll(result);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>总结：花了一下午时间去整理，后面的内容可能不是很详细，但是这种概念的东西，大家都可以的百度的到，还有有些代码都做了相关的注释，一些 UI 上的东西，跟本篇讲的可能关系不大，主要是处理应用的交互性，比如：判断是否联网，当没有联网的情况下提示文本，还有在进行网络访问的时候，添加一个进度条提示，应用正在处理。希望能给大家带来帮助！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>(*^▽^*)</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.jpg" alt="didiaoyuan WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.jpg" alt="didiaoyuan Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/多线程/" rel="tag"># 多线程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/01/JSON学习/" rel="next" title="JSON学习">
+                <i class="fa fa-chevron-left"></i> JSON学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/01/菜鸟Android(1)/" rel="prev" title="菜鸟Android(1)">
+                菜鸟Android(1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMTExMy83NjYy"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.jpg"
+               alt="didiaoyuan" />
+          <p class="site-author-name" itemprop="name">didiaoyuan</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LowApe" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5904420225/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要使用多线程？"><span class="nav-number">1.</span> <span class="nav-text">为什么要使用多线程？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AsyncTask-处理多线程"><span class="nav-number">2.</span> <span class="nav-text">AsyncTask 处理多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要使用-AsyncTaskLoader-？"><span class="nav-number">3.</span> <span class="nav-text">为什么要使用 AsyncTaskLoader ？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">didiaoyuan</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HLr79H4SdCjTW8X3Xl26bULP-gzGzoHsz", "PuvoRJAfnSxWgW1llJxycx9f");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

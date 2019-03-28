@@ -1,0 +1,1188 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Docker," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="仙人掌的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/love.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="本节目录:  其他生成镜像的方法 从 rootfs 压缩包导入 docker save 和 docker load   删除本地镜像 用 ID、镜像名、摘要删除镜像 Untagged 和 Deleted 用 docker images 命令来配合">
+<meta name="keywords" content="Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习Docker(2017-10-4)">
+<meta property="og:url" content="https://lowape.github.io/didiaoyuan.github.io/2017/10/04/学习Docker-2017-10-4/index.html">
+<meta property="og:site_name" content="仙人掌的博客">
+<meta property="og:description" content="本节目录:  其他生成镜像的方法 从 rootfs 压缩包导入 docker save 和 docker load   删除本地镜像 用 ID、镜像名、摘要删除镜像 Untagged 和 Deleted 用 docker images 命令来配合">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fk615ufvdgj30rx02i3yl.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fk618f5exxj30p9021jrf.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fk61o95xc9j30py0840tv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fk61t7iir4j30q605zjs5.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fk61wa270pj30n303cmxd.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fk61ziwlobj319g09xabz.jpg">
+<meta property="og:updated_time" content="2017-10-11T03:33:37.231Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习Docker(2017-10-4)">
+<meta name="twitter:description" content="本节目录:  其他生成镜像的方法 从 rootfs 压缩包导入 docker save 和 docker load   删除本地镜像 用 ID、镜像名、摘要删除镜像 Untagged 和 Deleted 用 docker images 命令来配合">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fk615ufvdgj30rx02i3yl.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lowape.github.io/didiaoyuan.github.io/2017/10/04/学习Docker-2017-10-4/"/>
+
+
+
+
+
+  <title> 学习Docker(2017-10-4) | 仙人掌的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?098f4976c7c8b06e2a89213a1bd8b958";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仙人掌的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">喜欢与世无争的清静</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lowape.github.io/didiaoyuan.github.io/2017/10/04/学习Docker-2017-10-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="didiaoyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仙人掌的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                学习Docker(2017-10-4)
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-04T10:30:02+08:00">
+                2017-10-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/04/学习Docker-2017-10-4/" class="leancloud_visitors" data-flag-title="学习Docker(2017-10-4)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本节目录:</p>
+<ol>
+<li>其他生成镜像的方法<br><ul>
+<li>从 rootfs 压缩包导入</li>
+<li>docker save 和 docker load</li>
+</ul>
+</li>
+<li>删除本地镜像<ul>
+<li>用 ID、镜像名、摘要删除镜像</li>
+<li>Untagged 和 Deleted</li>
+<li>用 docker images 命令来配合</li>
+</ul>
+</li>
+</ol>
+<a id="more"></a>
+<blockquote>
+<p>今天可能要出去，所以一大早上就要把今天要学习的内容学完ヾ(◍°∇°◍)ﾉﾞ</p>
+</blockquote>
+<h1 id="其他生成镜像的方法"><a href="#其他生成镜像的方法" class="headerlink" title="其他生成镜像的方法"></a>其他生成镜像的方法</h1><p>除了使用 Dockerfile 生成镜像的方法外,由于各种特殊需求和历史原因，还提供了其他方法用以生成镜像</p>
+<h3 id="从-rootfs-压缩包导入"><a href="#从-rootfs-压缩包导入" class="headerlink" title="从 rootfs 压缩包导入"></a>从 rootfs 压缩包导入</h3><p>格式: docker import [选项]&lt;文件&gt;|<url>|-[&lt;仓库名&gt;[:&lt;标签&gt;]]</url></p>
+<p>解释: 压缩包可以是本地文件、远程 Web 文件、甚至是从标准输入中得到。 压缩包将会在镜像/目录展开，并直接作为镜像的第一次提交</p>
+<p>实践:</p>
+<blockquote>
+<p>比如我们想要创建一个 OpenVZ 的 Ubuntu 14.04 模板的镜像:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">docker import</div><div class="line"> http://download.openvz.org/template/precreated/ubuntu-14.04-x86_64-minimal.tar.gz</div><div class="line"> openvz/ubuntu:14.04</div></pre></td></tr></table></figure>
+<p>因为命令过长 上面一条命令 我把他分为三行，这条命令下载 .tar.gz 文件，并作为根文件系统展开导入，并保存为镜像  openvz/ubuntu:14.04，导入成功后，<code>docker images</code>查看镜像，或者<code>docker history openvz/ubuntu:14.04</code>查看历史</p>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1fk615ufvdgj30rx02i3yl.jpg" alt=""></p>
+<p><a href="https://baike.baidu.com/item/openVZ/3270542?fr=aladdin" target="_blank" rel="external">关于 openVZ </a></p>
+<h3 id="docker-save-和-docker-load"><a href="#docker-save-和-docker-load" class="headerlink" title="docker save 和 docker load"></a>docker save 和 docker load</h3><p>Docker 还提供 docker save 和 docker load 命令用于将镜像保存为一个 tar 文件，然后传输到另一个位置上，再加载进来</p>
+<blockquote>
+<p>这是在没有 Docker Registry 时的做法，现在已经不推荐,镜像迁移应该直接使用 Docker Registry ，无论是直接使用 Docker Hub 还是使用内网私有 Registry 都可以。</p>
+</blockquote>
+<p><strong>保存镜像</strong><br>使用 docker save 将镜像保存为归档文件。</p>
+<p>实践:</p>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1fk618f5exxj30p9021jrf.jpg" alt=""></p>
+<p>保存镜像命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker save apline | gzip &gt; apline-latest.tar.gz</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>问题： windows 不识别 gzip 命令<br>解决： 下载 gzip for windows 版本</p>
+</blockquote>
+<p>将 alpine-latest.tar.gz 复制到另一个机器上，然后使用下面命令加载镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker load -i alpine-latest.tar.gz</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p> 如果我们结合这两个命令以及 ssh 甚至 pv 的话，利用 Linux 强大的管道，我<br>们可以写一个命令完成从一个机器将镜像迁移到另一个机器，并且带进度条的功<br>能：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker save &lt;镜像名&gt; | bzip2 | pv | ssh &lt;用户名&gt;@&lt;主机名&gt; &apos;cat | do</div><div class="line">cker load&apos;</div></pre></td></tr></table></figure>
+<p><a href="https://baike.baidu.com/item/ssh/10407?fr=aladdin" target="_blank" rel="external">关于 ssh</a><br><br><a href="http://blog.csdn.net/benpaobagzb/article/details/50768382" target="_blank" rel="external">关于 pv</a></p>
+<h1 id="删除本地镜像"><a href="#删除本地镜像" class="headerlink" title="删除本地镜像"></a>删除本地镜像</h1><p>格式: docker rmi [选项]&lt;镜像1&gt;[&lt;镜像2&gt;…]</p>
+<h3 id="用-ID、镜像名、摘要删除镜像"><a href="#用-ID、镜像名、摘要删除镜像" class="headerlink" title="用 ID、镜像名、摘要删除镜像"></a>用 ID、镜像名、摘要删除镜像</h3><p>实践:</p>
+<blockquote>
+<p>比如我们要删除,apline 镜像，可以执行;</p>
+</blockquote>
+<ul>
+<li>docker iamges 查看镜像信息</li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1fk61o95xc9j30py0840tv.jpg" alt=""></p>
+<ul>
+<li>docker rmi 镜像ID 如果删除不了 加 -f 强制删除<br><img src="http://ww1.sinaimg.cn/large/006rAlqhly1fk61t7iir4j30q605zjs5.jpg" alt=""></li>
+</ul>
+<p>或者 <code>docker ps -a</code> 查看所有 container id ，然后先 停止所有 container ID 然后在删除</p>
+<ul>
+<li>使用 镜像名，删除 <code>docker rmi 仓库名:标签</code></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1fk61wa270pj30n303cmxd.jpg" alt=""></p>
+<ul>
+<li>更准确的使用 镜像摘要删除镜像 <code>docker images –digests</code></li>
+</ul>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1fk61ziwlobj319g09xabz.jpg" alt=""></p>
+<h3 id="Untagged-和-Deleted"><a href="#Untagged-和-Deleted" class="headerlink" title="Untagged 和 Deleted"></a>Untagged 和 Deleted</h3><p>如果仔细发现，删除行为 有两类</p>
+<ol>
+<li>Deleted</li>
+<li>Untagged</li>
+</ol>
+<blockquote>
+<p>前面介绍过,镜像的唯一标识是其 ID 和 摘要</p>
+</blockquote>
+<ol>
+<li>我们都知道镜像的唯一标示是 ID 和 摘要 ，而一个镜像可以有更多个标签，因此当我们指定标签删除镜像，如果还有其他标签的对应这个镜像，就不会发生delete 行为，而 untaggged 使我们取消了所有的标签，当所有标签取消后就可以出发 delete 行为</li>
+<li>镜像之间的依赖，镜像是多层结构，删除的时候也是从上层向基础层方向依次进行判断删除，如果其他镜像依赖于待删除的某一层，也不会触发 delete 效果</li>
+<li>容器对镜像的依赖，如果有用这个镜像启动的容器存在，那么就不能删除镜像。容器是以镜像为基础添加一层容器存储器，组成的多层存储结构去运行。因此该镜像如果被这个容器所依赖的，就需要先删除容器，在删除镜像</li>
+</ol>
+<h1 id="用-docker-images-命令来配合"><a href="#用-docker-images-命令来配合" class="headerlink" title="用 docker images 命令来配合"></a>用 docker images 命令来配合</h1><p>实例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker rmi $(docker images -q -f dangling=true)</div></pre></td></tr></table></figure>
+<p>删除所有仓库名为 redis 的镜像：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker rmi $(docker images -q redis)</div></pre></td></tr></table></figure></p>
+<p>删除所有 mongo:3.2 之前的版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker rmi $(docker images -q -f before=mongo:3.2)</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>(*^▽^*)</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.jpg" alt="didiaoyuan WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.jpg" alt="didiaoyuan Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/03/学习Docker-2017-10-3/" rel="next" title="学习Docker(2017-10-3)">
+                <i class="fa fa-chevron-left"></i> 学习Docker(2017-10-3)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/05/学习Docker-2017-10-5/" rel="prev" title="学习Docker(2017-10-5)">
+                学习Docker(2017-10-5) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMTExMy83NjYy"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.jpg"
+               alt="didiaoyuan" />
+          <p class="site-author-name" itemprop="name">didiaoyuan</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LowApe" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5904420225/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#其他生成镜像的方法"><span class="nav-number">1.</span> <span class="nav-text">其他生成镜像的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#从-rootfs-压缩包导入"><span class="nav-number">1.0.1.</span> <span class="nav-text">从 rootfs 压缩包导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-save-和-docker-load"><span class="nav-number">1.0.2.</span> <span class="nav-text">docker save 和 docker load</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除本地镜像"><span class="nav-number">2.</span> <span class="nav-text">删除本地镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用-ID、镜像名、摘要删除镜像"><span class="nav-number">2.0.1.</span> <span class="nav-text">用 ID、镜像名、摘要删除镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Untagged-和-Deleted"><span class="nav-number">2.0.2.</span> <span class="nav-text">Untagged 和 Deleted</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用-docker-images-命令来配合"><span class="nav-number">3.</span> <span class="nav-text">用 docker images 命令来配合</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">didiaoyuan</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HLr79H4SdCjTW8X3Xl26bULP-gzGzoHsz", "PuvoRJAfnSxWgW1llJxycx9f");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

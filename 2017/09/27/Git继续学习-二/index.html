@@ -1,0 +1,1218 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Git,版本控制," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="仙人掌的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/love.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="之前的仓库操作跟SVN操作没甚区别，现在学习git独特的功能之一，远程仓库，配合GitHub网站托管代码块  远程仓库Git仓库与GitHub仓库的SSH加密">
+<meta name="keywords" content="Git,版本控制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git继续学习(二)">
+<meta property="og:url" content="https://lowape.github.io/didiaoyuan.github.io/2017/09/27/Git继续学习-二/index.html">
+<meta property="og:site_name" content="仙人掌的博客">
+<meta property="og:description" content="之前的仓库操作跟SVN操作没甚区别，现在学习git独特的功能之一，远程仓库，配合GitHub网站托管代码块  远程仓库Git仓库与GitHub仓库的SSH加密">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fjz3a75zk4j30fx0abdgd.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fjz4b4t9h9j30na0813zh.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhgy1fjz8fvauz0j30jv06baah.jpg">
+<meta property="og:updated_time" content="2017-10-11T03:34:30.743Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git继续学习(二)">
+<meta name="twitter:description" content="之前的仓库操作跟SVN操作没甚区别，现在学习git独特的功能之一，远程仓库，配合GitHub网站托管代码块  远程仓库Git仓库与GitHub仓库的SSH加密">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1fjz3a75zk4j30fx0abdgd.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lowape.github.io/didiaoyuan.github.io/2017/09/27/Git继续学习-二/"/>
+
+
+
+
+
+  <title> Git继续学习(二) | 仙人掌的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?098f4976c7c8b06e2a89213a1bd8b958";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仙人掌的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">喜欢与世无争的清静</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lowape.github.io/didiaoyuan.github.io/2017/09/27/Git继续学习-二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="didiaoyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仙人掌的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Git继续学习(二)
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-27T21:40:15+08:00">
+                2017-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">Git笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/09/27/Git继续学习-二/" class="leancloud_visitors" data-flag-title="Git继续学习(二)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>之前的仓库操作跟SVN操作没甚区别，现在学习git独特的功能之一，远程仓库，配合GitHub网站托管代码块</p>
+</blockquote>
+<h1 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h1><p><strong>Git仓库与GitHub仓库的SSH加密</strong><br><a id="more"></a><br><strong>第1步：</strong> 创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有<code>id_rsa<code>和</code>id_rsa.pub</code>这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：</p>
+<p><code>$ ssh-keygen -t rsa -C “youremail@example.com”</code></p>
+<p>id_rsa 是私钥<br>id_rsa.pub 是公钥</p>
+<p><strong>第2步：</strong><br>登陆GitHub，打开“Account settings”，“SSH Keys”页面：</p>
+<p>然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容：</p>
+<blockquote>
+<p>ssh Key 目的是让 GitHub 识别推送上来的是自己的内容，并且GitHub支持添加多个Key  也意味着 你可以有若干的电脑往github上提交东西</p>
+</blockquote>
+<p><strong>注意</strong>：既然github是公共网站，所以提交上去的代码都是公开的<br>要想让自己的代码不公开有两种方法</p>
+<ol>
+<li>给github缴费使用私有版本库</li>
+<li>自己搭建Git服务器</li>
+</ol>
+<p><strong>Git与GitHub进行同步</strong></p>
+<p>GitHub上创建一个版本库,获取ssh地址，用来对接</p>
+<p><code>git remote add origin git@github.com:xxx/仓库名称</code></p>
+<p>添加远程库的名称是origin,这是Git默认的叫法，也可以改成其他的,但是origin这个名字一看就知道是远程库,完成之后,就可以把本地的文件上传到远程库中了。</p>
+<p><code>git push -u origin master</code></p>
+<p>因为第一次推送到github,所以添加 -u 的参数，因为提交的是本地master分支，远程库是空的，所以会把master分支内容推送的远程库的master分支，还会把本地master与远程库master分支关联起来，在以后的推送或者拉取时就可以简化命令。以后直接使用<code>git push origin master</code>就可以了。</p>
+<p><strong>克隆远程版本库</strong></p>
+<p><code>git clone 版本库地址</code><br>git支持多种协议</p>
+<ol>
+<li>https</li>
+<li>ssh</li>
+</ol>
+<p>其中通过<code>ssh</code>原生<code>git</code>协议速度最快</p>
+<h1 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h1><p><strong>创建与合并分支</strong><br><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001375840038939c291467cc7c747b1810aab2fb8863508000" target="_blank" rel="external">原网站分支图</a></p>
+<p>总结:</p>
+<ol>
+<li><code>git branch</code> 查看分支</li>
+<li><code>git branch ‘name’ </code> 创建分支</li>
+<li><code>git checkout ‘name’</code> 切换分支</li>
+<li><code>git checkout -b ‘name’</code> 创建并切换分支</li>
+<li><code>git merge ‘name’</code> 合并分支</li>
+<li><code>git branch -d ‘name’</code> 删除分支</li>
+</ol>
+<p><strong>解决冲突</strong></p>
+<blockquote>
+<p>当两个分支进行合并出现冲突的时候，会出现冲突，冲突发生在两个分支在相同的位置上进行了修改，我们需要选在保留的部分删去不要的，处理后在进行提交</p>
+</blockquote>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1fjz3a75zk4j30fx0abdgd.jpg" alt=""><br>如何处理冲突可以查看<a href="http://blog.didiaoyuan.com/2017/07/03/Git%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/" target="_blank" rel="external">文章下方</a><br>如何处理冲突</p>
+<p><code>git log –graph</code> 查看分支合并图</p>
+<p><strong>分支管理策略</strong></p>
+<p>我们在合并分支的时候，一般会进入Fast forward快速合并模式，这个模式有个弊端是，直接删除分支，会丢失分支信息使用<code>–no-ff</code>参数普通合并，保留分支信息记录</p>
+<p><strong>Bug分支</strong></p>
+<blockquote>
+<p>场景：当我们在分支进行开发的时候，发现一个bug，可能通过建立一个修复bug的分支进行修复，但是你的开发分支正在编写，但是并不想提交，因为还为完成工作，但是你又必须现在就修复bug</p>
+</blockquote>
+<p>Git提供了一个<code>stash</code>功能，可以把你的工作展示保存，等使用的时候再恢复，如何使用呢？</p>
+<ol>
+<li>在开发分支下<code>git stash</code></li>
+<li><code>git status</code>查看工作区是空的</li>
+<li>bug修复后切换到开发分支</li>
+<li><code>git stash list </code>查看储存的</li>
+<li>恢复工作区<code>git stash pop </code>删除list列表，并恢复工作区内容</li>
+</ol>
+<p><strong>feature分支</strong></p>
+<blockquote>
+<p>场景:当我们有很多想法的时候，添加很多特效，功能的时候，通常创建一个feature分支，进行开发,但是会出现开发完好，突然说不需要添加这个功能了,在还没有合并提交的情况下删除</p>
+</blockquote>
+<ol>
+<li><code>git branch -d feature</code>会提示错误，未合并</li>
+<li>如果要丢弃一个没有被合并过的分支，可以通过<code>git branch -D ‘name’ <code>强行删除。</code></code></li>
+</ol>
+<p><strong>多人协助</strong></p>
+<p><code>git remote -v</code>查看远程库的详细信息<br>推送分支：</p>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1fjz4b4t9h9j30na0813zh.jpg" alt=""></p>
+<p>总结：</p>
+<ol>
+<li>首先 <code>git push origin 分支名称</code> 将本地推送到远程库中</li>
+<li>如果推送失败，因为远程分支比你的本地更新，<code>git pull 远程库 分支</code>命令获取最近版本，然后视图合并</li>
+<li>如果合并冲突，解决冲突，并在本地提交<code>git push origin 分支名称</code></li>
+<li>如果git pull 提示”no tracking information “,说明本地分支，和远程分支的连接关系没有创建，<code>git branch –set-upstream 分支名称 origin/分支名称</code></li>
+</ol>
+<p>以上就是多人协作的工作模式</p>
+<h1 id="标签管理"><a href="#标签管理" class="headerlink" title="标签管理"></a>标签管理</h1><blockquote>
+<p>发布一个版本时，我们通常先在版本库中打一个标签（tag），这样，就唯一确定了打标签时刻的版本。将来无论什么时候，取某个标签的版本，就是把那个打标签的时刻的历史版本取出来。所以，标签也是版本库的一个快照。<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013762144381812a168659b3dd4610b4229d81de5056cc000" target="_blank" rel="external">原链接</a></p>
+</blockquote>
+<p>在需要打标签的分支下执行下面的命令<br><code>git tag v1.0</code></p>
+<blockquote>
+<p>默认标签是打在最新的commit 上的，如果忘记打标签，可以找到需要打标签的commit_ID,然后打上标签<code>git tag v1.1   commit_ID</code></p>
+</blockquote>
+<p>查看所有标签<br><code>git tag</code></p>
+<p>根据标签的名称查看详细信息<br><code>git show 标签名称</code></p>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhgy1fjz8fvauz0j30jv06baah.jpg" alt=""></p>
+<h1 id="忽略特殊文件-9月29日"><a href="#忽略特殊文件-9月29日" class="headerlink" title="忽略特殊文件(9月29日)"></a>忽略特殊文件(9月29日)</h1><blockquote>
+<p>场景:当我们在开发自己的项目的时候，是否会遇到配置文件保存密码，获取自动生成的文件，这些文件我们不需要让他添加到版本库中，所以git中<code>.gitigore</code>文件就是存放需要忽略的文件信息<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013758404317281e54b6f5375640abbb11e67be4cd49e0000" target="_blank" rel="external">原文介绍</a></p>
+</blockquote>
+<ol>
+<li><p>如果你在资源管理器里新建一个.gitignore文件，它会非常弱智地提示你必须输入文件名，但是在文本编辑器里“保存”或者“另存为”就可以把文件保存为.gitignore了。</p>
+</li>
+<li><p>文件格式如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#python 文件基本忽略</div><div class="line">*.py[cod]</div><div class="line">*.so</div><div class="line">*.egg</div><div class="line">*.egg-info</div><div class="line">dist</div><div class="line">build</div></pre></td></tr></table></figure>
+</li>
+<li><p>将编辑好的.gitignore文件提交到git中</p>
+</li>
+</ol>
+<blockquote>
+<p>场景:如果你确实要强制添加内容，可以通过<code>git add -f ‘name’</code></p>
+<p>场景:如果想要检查文件关于忽略的信息，可以通过<code>git ceck-ignore</code>这条命令只能查询添加不上的忽略信息</p>
+</blockquote>
+<h1 id="配置别名"><a href="#配置别名" class="headerlink" title="配置别名"></a>配置别名</h1><blockquote>
+<p>功能:将命令简化，git status 简化 git st 一系列的命令简化操作</p>
+</blockquote>
+<p>基本格式:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> git config --global alias.st status</div><div class="line"><span class="meta">$</span> git config --global alias.co checkout</div><div class="line"><span class="meta">$</span> git config --global alias.ci commit</div><div class="line"><span class="meta">$</span> git config --global alias.br branch</div></pre></td></tr></table></figure></p>
+<p>还有一个用发，alias设置别名也可以替换长的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git config --global alias.unstage &apos;reset HEAD&apos;</div></pre></td></tr></table></figure>
+<p>设置了上面的命令以后回退版本，git reset unstage 就可以了</p>
+<blockquote>
+<p>配置Git的时候，加上–global是针对当前用户起作用的，如果不加，那只针对当前的仓库起作用</p>
+</blockquote>
+<p>配置文件目录 .git/config</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>(*^▽^*)</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.jpg" alt="didiaoyuan WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.jpg" alt="didiaoyuan Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/tags/版本控制/" rel="tag"># 版本控制</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/26/Git继续学习/" rel="next" title="Git继续学习">
+                <i class="fa fa-chevron-left"></i> Git继续学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/29/Git服务器搭建/" rel="prev" title="Git服务器搭建">
+                Git服务器搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMTExMy83NjYy"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.jpg"
+               alt="didiaoyuan" />
+          <p class="site-author-name" itemprop="name">didiaoyuan</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LowApe" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5904420225/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#远程仓库"><span class="nav-number">1.</span> <span class="nav-text">远程仓库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分支管理"><span class="nav-number">2.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#标签管理"><span class="nav-number">3.</span> <span class="nav-text">标签管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#忽略特殊文件-9月29日"><span class="nav-number">4.</span> <span class="nav-text">忽略特殊文件(9月29日)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置别名"><span class="nav-number">5.</span> <span class="nav-text">配置别名</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">didiaoyuan</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HLr79H4SdCjTW8X3Xl26bULP-gzGzoHsz", "PuvoRJAfnSxWgW1llJxycx9f");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

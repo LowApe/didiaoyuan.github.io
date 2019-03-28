@@ -1,0 +1,1162 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="仙人掌的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/love.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="最近学习了关于Android 的音频播放，以及系统中各应用之间对于音频播放的资源竞争处理。如何处理应用处于播放的状态下，其他的音频如何影响当前的状态。例如：当手机播放一个音乐，同时来了一个电话，这时音乐停止，当通话结束时再继续播放。">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android-音频播放（一）">
+<meta property="og:url" content="https://lowape.github.io/didiaoyuan.github.io/2017/03/30/Android-音频播放（一）/index.html">
+<meta property="og:site_name" content="仙人掌的博客">
+<meta property="og:description" content="最近学习了关于Android 的音频播放，以及系统中各应用之间对于音频播放的资源竞争处理。如何处理应用处于播放的状态下，其他的音频如何影响当前的状态。例如：当手机播放一个音乐，同时来了一个电话，这时音乐停止，当通话结束时再继续播放。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-e04989851ff4c5f7.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-09-19T06:39:40.381Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android-音频播放（一）">
+<meta name="twitter:description" content="最近学习了关于Android 的音频播放，以及系统中各应用之间对于音频播放的资源竞争处理。如何处理应用处于播放的状态下，其他的音频如何影响当前的状态。例如：当手机播放一个音乐，同时来了一个电话，这时音乐停止，当通话结束时再继续播放。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2556431-e04989851ff4c5f7.gif?imageMogr2/auto-orient/strip">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lowape.github.io/didiaoyuan.github.io/2017/03/30/Android-音频播放（一）/"/>
+
+
+
+
+
+  <title> Android-音频播放（一） | 仙人掌的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?098f4976c7c8b06e2a89213a1bd8b958";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仙人掌的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">喜欢与世无争的清静</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lowape.github.io/didiaoyuan.github.io/2017/03/30/Android-音频播放（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="didiaoyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仙人掌的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android-音频播放（一）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-30T21:12:23+08:00">
+                2017-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/03/30/Android-音频播放（一）/" class="leancloud_visitors" data-flag-title="Android-音频播放（一）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+          
+    <div class="out-img-topic">
+        <img src=http://upload-images.jianshu.io/upload_images/2556431-32585fe8b96ddf0f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240 class="img-topic">
+    </div>
+
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近学习了关于Android 的音频播放，以及系统中各应用之间对于音频播放的<strong>资源竞争</strong>处理。如何处理应用处于播放的状态下，其他的音频如何影响当前的状态。<br>例如：当手机播放一个音乐，同时来了一个电话，这时音乐停止，当通话结束时再继续播放。<br><a id="more"></a></p>
+<h2 id="如何创建一个播放音频"><a href="#如何创建一个播放音频" class="headerlink" title="如何创建一个播放音频"></a>如何创建一个播放音频</h2><blockquote>
+<p>注意：Media Player 只介绍最基础的，其他的方法后期遇到在进行详解。</p>
+</blockquote>
+<p>Media Player 类：媒体播放器类可用于控制播放的音频/视频文件和流。<br><img src="http://upload-images.jianshu.io/upload_images/2556431-e04989851ff4c5f7.gif?imageMogr2/auto-orient/strip" alt="Media Player的生命周期图"></p>
+<p>创建一个音频的语法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">MediaPlayer mMediaPlayer = MediaPlayer.create(Context context, int resid);</div></pre></td></tr></table></figure></p>
+<p>第一个参数：播放的位置<br>第二个参数：音频的资源ID(一般方法哦 raw 文件夹中)</p>
+<blockquote>
+<p>其中的方法我们只介绍常用的，以后遇到在进行总结归纳</p>
+</blockquote>
+<p>//播放开始后暂停，再播放从上次停止的位置继续<br>start()进行播放<br>pause()暂停</p>
+<p>//如果括号为0,音频回到最初的位置<br>seekTo() 指定的时间位置<br>reset()重置</p>
+<p>//停止后 只有先prepare()才能 start()<br>stop()停止<br>prepare()准备</p>
+<p>//当播放完后需要释放资源<br>release()释放资源</p>
+<p>上述其他方法可以查看生命周期图</p>
+<h5 id="应用播放机制"><a href="#应用播放机制" class="headerlink" title="应用播放机制"></a>应用播放机制</h5><p>要想播放音频，先要获取 Audio Focus，可以理解为只有获取到音频焦点的才可以播放，虽然 Android 2.2 之后添加了 Audio Focus，来处理系统之间音频的混乱。如果有程序在它失去AudioFocus的时候仍然在使用Audio，AudioFocus拿它也没办法，用户可能安装没遵守这种机制的程序，或者版本太老还没引入这种机制的程序，这最终会导致很差的用户体验。</p>
+<ol>
+<li><strong>如何获取 Audio Focus？</strong></li>
+</ol>
+<p>利用 AudioManager 来管理AudioFocus，先要实例化AudioManager</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AudioManager mAudioManager=(AudioManager)getSystemService(this.AUDIO_SERVICE);</div></pre></td></tr></table></figure>
+<p> mAudioManager提供两个方法 :</p>
+<p><strong>requestAudioFocus 获取焦点 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int requestAudioFocus (AudioManager.OnAudioFocusChangeListener, int streamType, int durationHint);</div></pre></td></tr></table></figure>
+<p>参数：</p>
+<ol>
+<li>焦点状态改变监听器</li>
+<li>输入流类型<ul>
+<li>STREAM_MUSIC 一般的音频其他的可以查看<a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#requestAudioFocus(android.media.AudioManager.OnAudioFocusChangeListener, int, int" target="_blank" rel="external">官方文档</a>)</li>
+</ul>
+</li>
+<li>持续时间<ul>
+<li><a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#AUDIOFOCUS_GAIN_TRANSIENT" target="_blank" rel="external">AUDIOFOCUS_GAIN_TRANSIENT</a> 临时获取焦点，短时间释放</li>
+<li><a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK" target="_blank" rel="external">AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK</a> 临时获取焦点，前焦点保持播放，其他降低音量</li>
+<li><a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE" target="_blank" rel="external">AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE</a> 介于上两个参数之间，不能破坏像通知，语音备忘，语言识别；</li>
+<li><a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#AUDIOFOCUS_GAIN" target="_blank" rel="external">AUDIOFOCUS_GAIN</a>未知的时间播放歌曲或视频</li>
+</ul>
+</li>
+</ol>
+<p>请求焦点会有两个结果<br>1 AUDIOFOCUS_REQUEST_GRANTED 请求焦点成功<br>2 AUDIOFICUS_REQUEST_FAILED 请求焦点失败</p>
+<hr>
+<p> <strong>abandonAudioFocus 释放焦点 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int abandonAudioFocus (AudioManager.OnAudioFocusChangeListener)</div></pre></td></tr></table></figure>
+<h5 id="焦点状态改变监听器"><a href="#焦点状态改变监听器" class="headerlink" title="焦点状态改变监听器"></a>焦点状态改变监听器</h5><p>通过一个 onAudioFocusChangeLiestener  方法回调来获得  Audiofocus 发生更改 后 的通知<br>监听设备更改 以便做出响应  onAudioFocusChangeLiestener 是一种接口     包含一个必须实施的onAudioFocusChange 抽象类（如果获得焦点 应该做什么，失去后应该做什么</p>
+<p>onAudioFocusChange：<br>四个参数:</p>
+<ol>
+<li><a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#AUDIOFOCUS_GAIN" target="_blank" rel="external">AUDIOFOCUS_GAIN</a></li>
+<li><a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#AUDIOFOCUS_LOSS" target="_blank" rel="external">AUDIOFOCUS_LOSS</a></li>
+<li><a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#AUDIOFOCUS_LOSS_TRANSIENT" target="_blank" rel="external">AUDIOFOCUS_LOSS_TRANSIENT</a></li>
+<li><a href="http://developer.android.youdaxue.com/reference/android/media/AudioManager.html#AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK" target="_blank" rel="external">AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK</a></li>
+</ol>
+<blockquote>
+<p>不懂的可以点看连接详细理解。</p>
+</blockquote>
+<h2 id="实战演练"><a href="#实战演练" class="headerlink" title="实战演练"></a>实战演练</h2><p>实现当失去焦点时，暂停，等恢复获得焦点后，继续播放</p>
+<blockquote>
+<p>下面是通过 ArrayList 一个数组列表（List+ArrayAdapter实现），看不懂没关系，主要理解当点击时，先获取 AudioFocus 状态，根据焦点状态进行判断</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div></pre></td><td class="code"><pre><div class="line">public class NumbersActivity extends AppCompatActivity &#123;</div><div class="line">    //定义一个音频管理的对象</div><div class="line">    private AudioManager mAudioManager;</div><div class="line">    //创建一个监听音频聚焦的监听器</div><div class="line">    AudioManager.OnAudioFocusChangeListener mAudioFocusChangeListener =</div><div class="line">            new AudioManager.OnAudioFocusChangeListener() &#123;</div><div class="line">        @Override</div><div class="line">        public void onAudioFocusChange(int i) &#123;</div><div class="line">            //判断当状态  暂时失去音频焦点  暂停并并重置</div><div class="line">            if(i==AudioManager.AUDIOFOCUS_LOSS_TRANSIENT||</div><div class="line">               i==AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)&#123;</div><div class="line">                mediaPlayer.pause();</div><div class="line">                mediaPlayer.seekTo(0);</div><div class="line">            &#125;else</div><div class="line">            //判断当状态获取音频焦点时应该播放</div><div class="line">            if(i==AudioManager.AUDIOFOCUS_GAIN)&#123;</div><div class="line">                mediaPlayer.start();</div><div class="line">            &#125;else</div><div class="line">            //当前状态  永远失去焦点的时候  释放资源</div><div class="line">            if(i==AudioManager.AUDIOFOCUS_LOSS)&#123;</div><div class="line">                releaseMediaPlayer();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    private MediaPlayer mediaPlayer;</div><div class="line">    //？？？有必要吗？</div><div class="line">    private MediaPlayer.OnCompletionListener mCompletionListener = new</div><div class="line">        MediaPlayer.OnCompletionListener() &#123;</div><div class="line">        @Override</div><div class="line">        public void onCompletion(MediaPlayer mediaPlayer) &#123;</div><div class="line">            releaseMediaPlayer();</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.word_list);</div><div class="line">        //获取AudioManager</div><div class="line">        mAudioManager = (AudioManager) getSystemService(this.AUDIO_SERVICE);</div><div class="line">        //自定义的数组列表  类型是Word类的数据</div><div class="line">        final ArrayList&lt;Word&gt; words = new ArrayList&lt;Word&gt;();</div><div class="line">        words.add(new Word(&quot;one&quot;, &quot;lutti&quot;, R.drawable.number_one,</div><div class="line"></div><div class="line">        //自定义的一个适配器，继承以前的数组适配器</div><div class="line">        WordAdapter itemsAdapter = new WordAdapter(this, words, R.color.category_numbers);</div><div class="line">        ListView listView = (ListView) findViewById(R.id.list);</div><div class="line">        listView.setAdapter(itemsAdapter);</div><div class="line">        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onItemClick(AdapterView&lt;?&gt; adapterView, View view, int i, long l) &#123;</div><div class="line">                Word word = words.get(i);</div><div class="line">                //request 获取Audio Focus</div><div class="line">               int result=mAudioManager.requestAudioFocus(mAudioFocusChangeListener</div><div class="line">                       , AudioManager.STREAM_MUSIC</div><div class="line">                       , AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK);</div><div class="line">                //成功的焦点更改请求</div><div class="line">                if(result==AudioManager.AUDIOFOCUS_REQUEST_GRANTED)&#123;</div><div class="line">                    //创建一个MediaPlayer</div><div class="line">                    mediaPlayer = MediaPlayer.</div><div class="line">                            create(NumbersActivity.this, word.getMusicResource());</div><div class="line"></div><div class="line">                //开始播放</div><div class="line">                mediaPlayer.start();</div><div class="line">                //</div><div class="line">                mediaPlayer.setOnCompletionListener(mCompletionListener);</div><div class="line"></div><div class="line">                &#125;</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">   @Override</div><div class="line">    protected void onStop() &#123;</div><div class="line">        super.onStop();</div><div class="line">        releaseMediaPlayer();</div><div class="line">    &#125;</div><div class="line">// 自定义的一个释放资源的类</div><div class="line">    private void releaseMediaPlayer() &#123;</div><div class="line"></div><div class="line">        if (mediaPlayer != null) &#123;</div><div class="line"></div><div class="line">            mediaPlayer.release();</div><div class="line"></div><div class="line">            mediaPlayer = null;</div><div class="line">            //失去焦点</div><div class="line">            mAudioManager.abandonAudioFocus(mAudioFocusChangeListener);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>(*^▽^*)</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.jpg" alt="didiaoyuan WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.jpg" alt="didiaoyuan Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/28/Hexo-主题美化/" rel="next" title="Hexo 主题美化">
+                <i class="fa fa-chevron-left"></i> Hexo 主题美化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/03/浅谈-Fragment/" rel="prev" title="浅谈 Fragment">
+                浅谈 Fragment <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMTExMy83NjYy"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.jpg"
+               alt="didiaoyuan" />
+          <p class="site-author-name" itemprop="name">didiaoyuan</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LowApe" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5904420225/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何创建一个播放音频"><span class="nav-number">1.</span> <span class="nav-text">如何创建一个播放音频</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#应用播放机制"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">应用播放机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#焦点状态改变监听器"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">焦点状态改变监听器</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实战演练"><span class="nav-number">2.</span> <span class="nav-text">实战演练</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">didiaoyuan</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HLr79H4SdCjTW8X3Xl26bULP-gzGzoHsz", "PuvoRJAfnSxWgW1llJxycx9f");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

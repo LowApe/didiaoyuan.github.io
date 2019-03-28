@@ -1,0 +1,1133 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JSON" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="仙人掌的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/love.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="&amp;gt;有关的知识点可能过于简单，但是又不得不去写，想要养成写博客的习惯，不仅仅是对自己知识的总结，也是对耐力的磨练，虽然目前学的东西很浅，但是随着以后的深入不断去补充相关的知识，使自己的文章更加精炼。">
+<meta name="keywords" content="JSON">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSON学习">
+<meta property="og:url" content="https://lowape.github.io/didiaoyuan.github.io/2017/05/01/JSON学习/index.html">
+<meta property="og:site_name" content="仙人掌的博客">
+<meta property="og:description" content="&amp;gt;有关的知识点可能过于简单，但是又不得不去写，想要养成写博客的习惯，不仅仅是对自己知识的总结，也是对耐力的磨练，虽然目前学的东西很浅，但是随着以后的深入不断去补充相关的知识，使自己的文章更加精炼。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-674bd3a57c73d160.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-2866cd457882f5e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://ww1.sinaimg.cn/mw690/006rAlqhly1ff64pmr2d6j30mf0lkabi.jpg">
+<meta property="og:updated_time" content="2017-10-11T03:35:27.133Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSON学习">
+<meta name="twitter:description" content="&amp;gt;有关的知识点可能过于简单，但是又不得不去写，想要养成写博客的习惯，不仅仅是对自己知识的总结，也是对耐力的磨练，虽然目前学的东西很浅，但是随着以后的深入不断去补充相关的知识，使自己的文章更加精炼。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2556431-674bd3a57c73d160.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lowape.github.io/didiaoyuan.github.io/2017/05/01/JSON学习/"/>
+
+
+
+
+
+  <title> JSON学习 | 仙人掌的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?098f4976c7c8b06e2a89213a1bd8b958";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仙人掌的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">喜欢与世无争的清静</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lowape.github.io/didiaoyuan.github.io/2017/05/01/JSON学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="didiaoyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仙人掌的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                JSON学习
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T20:49:25+08:00">
+                2017-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/01/JSON学习/" class="leancloud_visitors" data-flag-title="JSON学习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&gt;<br>有关的知识点可能过于简单，但是又不得不去写，想要养成写博客的习惯，不仅仅是对自己知识的总结，也是对耐力的磨练，虽然目前学的东西很浅，但是随着以后的深入不断去补充相关的知识，使自己的文章更加精炼。</p>
+<a id="more"></a>
+<p> 最近在做一个网络请求的demo，用到了JSON，做一次总结。</p>
+<h4 id="一、JSON基础知识点？"><a href="#一、JSON基础知识点？" class="headerlink" title="一、JSON基础知识点？"></a>一、JSON基础知识点？</h4><p>JSON是一种取代XML的数据结构,和xml相比,它更小巧但描述能力却不差,由于它的小巧所以网络传输数据将减少更多流量从而加快速度。</p>
+<p>JSON就是一串字符串 只不过元素会使用特定的符号标注。</p>
+<p>{} 双括号表示对象</p>
+<p>[] 中括号表示数组</p>
+<p>“ “ 双引号内是属性或值</p>
+<p>: 冒号表示后者是前者的值(这个值可以是字符串、数字、也可以是另一个数组或对象)</p>
+<h4 id="二、Json解析"><a href="#二、Json解析" class="headerlink" title="二、Json解析"></a>二、Json解析</h4><p><img src="http://upload-images.jianshu.io/upload_images/2556431-674bd3a57c73d160.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="如图"></p>
+<p>第一个 “size” 键的值为 9.5，由此可以判断出 该值属于数值类型，因为值周围没有引号。<br>第二个 “wide” 键的值为 true，不带引号。这 表示该值属于布尔值。如果数字周围有引号，则表示其为字符串。也就是我们在第三个键值对中找到的字符串。<br>第三个 “country-of-origin”键的值为 “usa”。<br>第四个键是 “style”，其值表示为对象，因为两侧有大括号。</p>
+<p>在 style 对象内部，我们可以找到两个嵌套键/值对：一个为 catergories，一个为color。其实 catergories 的值是一个数组，“boot” 和 “winklepicker”被包含在中括号内组成一个数组。 按照这种方式，通过使用对象和数组，可以嵌套几组值， 随后便可在这些容器中放入不同的数据类型。</p>
+<p>如果我们请求的数据很多比如这个<a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson" target="_blank" rel="external">URL</a>;<br>我们就需要JSON整理格式化，推荐一个格式<a href="https://jsonformatter.curiousconcept.com/" target="_blank" rel="external">网站
+</a></p>
+<h4 id="三、如何获取JSON中的数据"><a href="#三、如何获取JSON中的数据" class="headerlink" title="三、如何获取JSON中的数据"></a>三、如何获取JSON中的数据</h4><p>通过这个demo，先说明一下这个demo是在给定的 JSON ,下面的String中就是我们<br>需要解析的<a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson" target="_blank" rel="external">JSON</a><br>通过上面给的JSON格式工具，我们做一些操作取出 “features”对象中的一些值。<br>便于理解贴一张图吧</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2556431-2866cd457882f5e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="需要的数据"></p>
+<blockquote>
+<p> 下面的代码只是贴出必要的数据，方便需要运行看效果的同学直接拿来用</p>
+</blockquote>
+<h5 id="demo："><a href="#demo：" class="headerlink" title="demo："></a>demo：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SAMPLE_JSON_RESPONSE = <span class="string">"&#123;\"type\":\"FeatureCollection\",\"metadata\":&#123;\"generated\":1462295443000,\"url\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&amp;starttime=2016-01-01&amp;endtime=2016-01-31&amp;minmag=6&amp;limit=10\",\"title\":\"USGS Earthquakes\",\"status\":200,\"api\":\"1.5.2\",\"limit\":10,\"offset\":1,\"count\":10&#125;,\"features\":[&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":7.2,\"place\":\"88km N of Yelizovo, Russia\",\"time\":1454124312220,\"updated\":1460674294040,\"tz\":720,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us20004vvx\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us20004vvx&amp;format=geojson\",\"felt\":2,\"cdi\":3.4,\"mmi\":5.82,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":1,\"sig\":798,\"net\":\"us\",\"code\":\"20004vvx\",\"ids\":\",at00o1qxho,pt16030050,us20004vvx,gcmt20160130032510,\",\"sources\":\",at,pt,us,gcmt,\",\"types\":\",cap,dyfi,finite-fault,general-link,general-text,geoserve,impact-link,impact-text,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,tectonic-summary,\",\"nst\":null,\"dmin\":0.958,\"rms\":1.19,\"gap\":17,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 7.2 - 88km N of Yelizovo, Russia\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[158.5463,53.9776,177]&#125;,\"id\":\"us20004vvx\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":6.19,\"place\":\"84km SSE of Taron, Papua New Guinea\",\"time\":1453777820750,\"updated\":1460156775040,\"tz\":600,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us20004uks\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us20004uks&amp;format=geojson\",\"felt\":null,\"cdi\":null,\"mmi\":4.1,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":1,\"sig\":572,\"net\":\"us\",\"code\":\"20004uks\",\"ids\":\",us20004uks,gcmt20160126031023,\",\"sources\":\",us,gcmt,\",\"types\":\",cap,geoserve,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,tectonic-summary,\",\"nst\":null,\"dmin\":1.537,\"rms\":0.74,\"gap\":25,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 6.1 - 94km SSE of Taron, Papua New Guinea\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[153.2454,-5.2952,26]&#125;,\"id\":\"us20004uks\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":6.3,\"place\":\"50km NNE of Al Hoceima, Morocco\",\"time\":1453695722730,\"updated\":1460156773040,\"tz\":0,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us10004gy9\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us10004gy9&amp;format=geojson\",\"felt\":117,\"cdi\":7.2,\"mmi\":5.28,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":0,\"sig\":695,\"net\":\"us\",\"code\":\"10004gy9\",\"ids\":\",us10004gy9,gcmt20160125042203,\",\"sources\":\",us,gcmt,\",\"types\":\",cap,dyfi,geoserve,impact-text,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,tectonic-summary,\",\"nst\":null,\"dmin\":2.201,\"rms\":0.92,\"gap\":20,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 6.3 - 50km NNE of Al Hoceima, Morocco\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[-3.6818,35.6493,12]&#125;,\"id\":\"us10004gy9\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":7.1,\"place\":\"86km E of Old Iliamna, Alaska\",\"time\":1453631430230,\"updated\":1460156770040,\"tz\":-540,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us10004gqp\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us10004gqp&amp;format=geojson\",\"felt\":1816,\"cdi\":7.2,\"mmi\":6.6,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":1,\"sig\":1496,\"net\":\"us\",\"code\":\"10004gqp\",\"ids\":\",at00o1gd6r,us10004gqp,ak12496371,gcmt20160124103030,\",\"sources\":\",at,us,ak,gcmt,\",\"types\":\",cap,dyfi,finite-fault,general-link,general-text,geoserve,impact-link,impact-text,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,tectonic-summary,trump-origin,\",\"nst\":null,\"dmin\":0.72,\"rms\":2.11,\"gap\":19,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 7.1 - 86km E of Old Iliamna, Alaska\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[-153.4051,59.6363,129]&#125;,\"id\":\"us10004gqp\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":6.6,\"place\":\"215km SW of Tomatlan, Mexico\",\"time\":1453399617650,\"updated\":1459963829040,\"tz\":-420,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us10004g4l\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us10004g4l&amp;format=geojson\",\"felt\":11,\"cdi\":2.7,\"mmi\":3.92,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":1,\"sig\":673,\"net\":\"us\",\"code\":\"10004g4l\",\"ids\":\",at00o1bebo,pt16021050,us10004g4l,gcmt20160121180659,\",\"sources\":\",at,pt,us,gcmt,\",\"types\":\",cap,dyfi,geoserve,impact-link,impact-text,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,tectonic-summary,\",\"nst\":null,\"dmin\":2.413,\"rms\":0.98,\"gap\":74,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 6.6 - 215km SW of Tomatlan, Mexico\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[-106.9337,18.8239,10]&#125;,\"id\":\"us10004g4l\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":6.74,\"place\":\"52km SE of Shizunai, Japan\",\"time\":1452741933640,\"updated\":1459304879040,\"tz\":540,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us10004ebx\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us10004ebx&amp;format=geojson\",\"felt\":51,\"cdi\":5.8,\"mmi\":6.45,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":1,\"sig\":720,\"net\":\"us\",\"code\":\"10004ebx\",\"ids\":\",us10004ebx,pt16014050,at00o0xauk,gcmt20160114032534,\",\"sources\":\",us,pt,at,gcmt,\",\"types\":\",associate,cap,dyfi,geoserve,impact-link,impact-text,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,\",\"nst\":null,\"dmin\":0.281,\"rms\":0.98,\"gap\":22,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 6.7 - 52km SE of Shizunai, Japan\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[142.781,41.9723,46]&#125;,\"id\":\"us10004ebx\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":6.1,\"place\":\"12km WNW of Charagua, Bolivia\",\"time\":1452741928270,\"updated\":1459304879040,\"tz\":-240,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us10004ebw\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us10004ebw&amp;format=geojson\",\"felt\":3,\"cdi\":2.2,\"mmi\":2.21,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":0,\"sig\":573,\"net\":\"us\",\"code\":\"10004ebw\",\"ids\":\",us10004ebw,gcmt20160114032528,\",\"sources\":\",us,gcmt,\",\"types\":\",cap,dyfi,geoserve,impact-text,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,tectonic-summary,\",\"nst\":null,\"dmin\":5.492,\"rms\":1.04,\"gap\":16,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 6.1 - 12km WNW of Charagua, Bolivia\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[-63.3288,-19.7597,582.56]&#125;,\"id\":\"us10004ebw\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":6.23,\"place\":\"74km NW of Rumoi, Japan\",\"time\":1452532083920,\"updated\":1459304875040,\"tz\":540,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us10004djn\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us10004djn&amp;format=geojson\",\"felt\":8,\"cdi\":3.4,\"mmi\":3.74,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":0,\"sig\":594,\"net\":\"us\",\"code\":\"10004djn\",\"ids\":\",us10004djn,gcmt20160111170803,\",\"sources\":\",us,gcmt,\",\"types\":\",cap,dyfi,geoserve,impact-text,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,tectonic-summary,\",\"nst\":null,\"dmin\":1.139,\"rms\":0.96,\"gap\":33,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 6.2 - 74km NW of Rumoi, Japan\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[141.0867,44.4761,238.81]&#125;,\"id\":\"us10004djn\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":6.5,\"place\":\"227km SE of Sarangani, Philippines\",\"time\":1452530285900,\"updated\":1459304874040,\"tz\":480,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us10004dj5\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us10004dj5&amp;format=geojson\",\"felt\":1,\"cdi\":2.7,\"mmi\":7.5,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":1,\"sig\":650,\"net\":\"us\",\"code\":\"10004dj5\",\"ids\":\",at00o0srjp,pt16011050,us10004dj5,gcmt20160111163807,\",\"sources\":\",at,pt,us,gcmt,\",\"types\":\",cap,dyfi,geoserve,impact-link,impact-text,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,tectonic-summary,\",\"nst\":null,\"dmin\":3.144,\"rms\":0.72,\"gap\":22,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 6.5 - 227km SE of Sarangani, Philippines\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[126.8621,3.8965,13]&#125;,\"id\":\"us10004dj5\"&#125;,\n"</span> +</div><div class="line">            <span class="string">"&#123;\"type\":\"Feature\",\"properties\":&#123;\"mag\":6.55,\"place\":\"Pacific-Antarctic Ridge\",\"time\":1451986454620,\"updated\":1459202978040,\"tz\":-540,\"url\":\"http://earthquake.usgs.gov/earthquakes/eventpage/us10004bgk\",\"detail\":\"http://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us10004bgk&amp;format=geojson\",\"felt\":0,\"cdi\":1,\"mmi\":0,\"alert\":\"green\",\"status\":\"reviewed\",\"tsunami\":0,\"sig\":554,\"net\":\"us\",\"code\":\"10004bgk\",\"ids\":\",us10004bgk,gcmt20160105093415,\",\"sources\":\",us,gcmt,\",\"types\":\",cap,dyfi,geoserve,losspager,moment-tensor,nearby-cities,origin,phase-data,shakemap,\",\"nst\":null,\"dmin\":30.75,\"rms\":0.67,\"gap\":71,\"magType\":\"mww\",\"type\":\"earthquake\",\"title\":\"M 6.0 - Pacific-Antarctic Ridge\"&#125;,\"geometry\":&#123;\"type\":\"Point\",\"coordinates\":[-136.2603,-54.2906,10]&#125;,\"id\":\"us10004bgk\"&#125;],\"bbox\":[-153.4051,-54.2906,10,158.5463,59.6363,582.56]&#125;"</span>;</div><div class="line"></div><div class="line">           <span class="comment">//创建一个JSON对象，并传入JSON格式的数据</span></div><div class="line">            JSONObject  root = <span class="keyword">new</span> JSONObject(SAMPLE_JSON_RESPONSE);</div><div class="line">            <span class="comment">//获取数组对象“features” 从图中可以看出“features”后面是中括号</span></div><div class="line">            JSONArray featureArray=root.getJSONArray(<span class="string">"features"</span>);</div><div class="line">            <span class="comment">//这个循环只是获取每个数组中相同的对象</span></div><div class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;featureArray.length();i++)&#123;</div><div class="line">                    <span class="comment">//获取第 i 个数组中的数据</span></div><div class="line">                    JSONObject earthquake= featureArray.getJSONObject(i);</div><div class="line">                    <span class="comment">//获取该对象中的“properties”JSON对象</span></div><div class="line">                    JSONObject properties=earthquake.getJSONObject(<span class="string">"properties"</span>);</div><div class="line">                    <span class="comment">//获取键为“mag”的值</span></div><div class="line">                    Double mag= properties.getDouble(<span class="string">"mag"</span>);</div><div class="line">                    <span class="comment">//获取键为“place”的值</span></div><div class="line">                     String place= properties.getString(<span class="string">"place"</span>);</div><div class="line">                    <span class="comment">//获取键为“time”的值</span></div><div class="line">                    Long time= Long.valueOf(properties.getString(<span class="string">"time"</span>));</div></pre></td></tr></table></figure>
+<p>上面获取出来的值可有用 log 或者 Toast 显示出来</p>
+<h4 id="四、JSON-数据中时间格式的转换"><a href="#四、JSON-数据中时间格式的转换" class="headerlink" title="四、JSON 数据中时间格式的转换"></a>四、JSON 数据中时间格式的转换</h4><p>可以看出来 JSON 中 “time” 键值为毫秒数，我们便于观看需要转换为我们熟悉的格式,所以我们用到了 <strong>SimpleDateFormat</strong>类，基本格式是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//引号中的格式参照下图</div><div class="line">SimpleDateFormat dateFormat=new SimpleDateFormat (&quot;yyyy-MM-dd&quot;);</div><div class="line">Date date=new Date(time);  //time为获取到的毫秒数</div><div class="line">String showDate=dateFormat.format(date);</div><div class="line">//用 log 或者 Toast 显示出来</div></pre></td></tr></table></figure>
+<p><img src="http://ww1.sinaimg.cn/mw690/006rAlqhly1ff64pmr2d6j30mf0lkabi.jpg" alt=""></p>
+<p>如果要处理数值的格式我们用<strong>DecimalFormat</strong>类，用法很简单，如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//“0”表示站位，下面的意思表示只保留一位小数</span></div><div class="line"><span class="comment">//当然我们可以使用Math类也能达到保留一位小数</span></div><div class="line"> DecimalFormat decimalFormat=<span class="keyword">new</span> DecimalFormat(<span class="string">"0.0"</span>);</div></pre></td></tr></table></figure></p>
+<p>更详细的可以查看 <a href="http://developer.android.youdaxue.com/reference/java/text/DecimalFormat.html?utm_source=udacity&amp;utm_medium=course&amp;utm_campaign=android_basics#format(java.lang.Object, java.lang.StringBuffer, java.text.FieldPosition" target="_blank" rel="external">DecimalFormat 格式方法</a>)，里面也有格式图，方便理解；</p>
+<h4 id="五、字符串的操控"><a href="#五、字符串的操控" class="headerlink" title="五、字符串的操控"></a>五、字符串的操控</h4><p>你也可以参阅文档中的<a href="http://developer.android.youdaxue.com/reference/java/lang/CharSequence.html" target="_blank" rel="external">CharSequence</a>。CharSequence 是一组字符，字符串是一种更具体的 CharSequence （String 类是 CharSequence 类的 扩展类）。如果某个方法要求使用 CharSequence 作为输入，你可以 传递一个字符串。 以下是一些可以在 String 对象上调用的其他方法：<br><a href="http://developer.android.youdaxue.com/reference/java/lang/String.html?utm_source=udacity&amp;utm_medium=course&amp;utm_campaign=android_basics#length(" target="_blank" rel="external">length()</a>) - 返回字符串中的 字符数<br><a href="http://developer.android.youdaxue.com/reference/java/lang/String.html?utm_source=udacity&amp;utm_medium=course&amp;utm_campaign=android_basics#contains(java.lang.CharSequence" target="_blank" rel="external">contains(CharSequence cs)</a>) - 根据 原始字符串中是否包含输入 CharSequence （或输入 String）返回 true 或 false<br><a href="http://developer.android.youdaxue.com/reference/java/lang/String.html?utm_source=udacity&amp;utm_medium=course&amp;utm_campaign=android_basics#indexOf(java.lang.String" target="_blank" rel="external">indexOf(String string)</a>) - 返回输入 String 首次在原始 String 中出现的位置的索引，如果 原始 String 中不存在输入 String，则返回 -1<br><a href="http://developer.android.youdaxue.com/reference/java/lang/String.html?utm_source=udacity&amp;utm_medium=course&amp;utm_campaign=android_basics#split(java.lang.String" target="_blank" rel="external">split(String string)</a>) - 根据输入 String 中 指定的位置对原始 String 进行拆分， 并返回包含拆分后 String 部分的数组。<br><a href="http://developer.android.youdaxue.com/reference/java/lang/String.html?utm_source=udacity&amp;utm_medium=course&amp;utm_campaign=android_basics#substring(int,%20int" target="_blank" rel="external">substring(int start, int end)</a>) - 返回 一个新的 String，该 String 为从开始索引到结束索引 之间的内容（包括开始索引但不包括结束索引）。</p>
+<h5 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h5><p>demo 中，我们需要拆分“place” 中的数据，其中以“of”为划分</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">TextView mLocation= (TextView) listItem.findViewById(R.id.location_tv);</div><div class="line"><span class="comment">//说明一下mData.getLocation()是adpater中获取的具体的“place”数据</span></div><div class="line">  String show=<span class="keyword">null</span>;</div><div class="line">        <span class="comment">//获取出现“of”的索引值</span></div><div class="line">        <span class="keyword">int</span> indexOf=mData.getLocation().indexOf(<span class="string">"of"</span>);</div><div class="line">      <span class="comment">//如果数据包含“of”</span></div><div class="line">        <span class="keyword">if</span>(mData.getLocation().contains(<span class="string">"of"</span>))&#123;</div><div class="line">             <span class="comment">//从0索引开始到of之后得到索引结束取出之间的值</span></div><div class="line">             show=mData.getLocation().substring(<span class="number">0</span>,indexOf+<span class="number">2</span>);</div><div class="line"></div><div class="line">        &#125;<span class="keyword">else</span>&#123;</div><div class="line">            show=<span class="string">"near the"</span>;</div><div class="line">        &#125;</div><div class="line">      <span class="comment">//设置显示的文本</span></div><div class="line">        mLocation.setText(show);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>更多的操作需要具体要求修改，答案不唯一，有兴趣可以把其他的几个方法的尝试一下</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>(*^▽^*)</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.jpg" alt="didiaoyuan WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.jpg" alt="didiaoyuan Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/18/总有你要的编程书单(GitHub)/" rel="next" title="总有你要的编程书单(GitHub)">
+                <i class="fa fa-chevron-left"></i> 总有你要的编程书单(GitHub)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/07/AsyncTask-和-AsyncTaskLoader-的使用/" rel="prev" title=" AsyncTask 和 AsyncTaskLoader 的使用">
+                 AsyncTask 和 AsyncTaskLoader 的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMTExMy83NjYy"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.jpg"
+               alt="didiaoyuan" />
+          <p class="site-author-name" itemprop="name">didiaoyuan</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LowApe" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5904420225/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、JSON基础知识点？"><span class="nav-number">1.</span> <span class="nav-text">一、JSON基础知识点？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、Json解析"><span class="nav-number">2.</span> <span class="nav-text">二、Json解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、如何获取JSON中的数据"><span class="nav-number">3.</span> <span class="nav-text">三、如何获取JSON中的数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#demo："><span class="nav-number">3.1.</span> <span class="nav-text">demo：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、JSON-数据中时间格式的转换"><span class="nav-number">4.</span> <span class="nav-text">四、JSON 数据中时间格式的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、字符串的操控"><span class="nav-number">5.</span> <span class="nav-text">五、字符串的操控</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#demo"><span class="nav-number">5.1.</span> <span class="nav-text">demo</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">didiaoyuan</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HLr79H4SdCjTW8X3Xl26bULP-gzGzoHsz", "PuvoRJAfnSxWgW1llJxycx9f");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

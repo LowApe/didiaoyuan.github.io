@@ -1,0 +1,1136 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="仙人掌的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/love.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这一篇主要介绍了 Hexo nexT 主题的美化，添加了如何修改标题栏上面的进度条，进度条根据阅读得多少显示长度，还增加了头像旋转特效和如何添加畅言评论系统，主要先介绍三个样式修改，希望大家更多的时间放在原创文章上面，把博客当成自己总结经验和知识的地方，相信你的经验也会带给别人更多的收获！">
+<meta name="keywords" content="Hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo 主题美化">
+<meta property="og:url" content="https://lowape.github.io/didiaoyuan.github.io/2017/03/28/Hexo-主题美化/index.html">
+<meta property="og:site_name" content="仙人掌的博客">
+<meta property="og:description" content="这一篇主要介绍了 Hexo nexT 主题的美化，添加了如何修改标题栏上面的进度条，进度条根据阅读得多少显示长度，还增加了头像旋转特效和如何添加畅言评论系统，主要先介绍三个样式修改，希望大家更多的时间放在原创文章上面，把博客当成自己总结经验和知识的地方，相信你的经验也会带给别人更多的收获！">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-1ebf050498bebb30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2556431-fbea453108ac845d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666">
+<meta property="og:updated_time" content="2017-09-19T06:39:53.731Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo 主题美化">
+<meta name="twitter:description" content="这一篇主要介绍了 Hexo nexT 主题的美化，添加了如何修改标题栏上面的进度条，进度条根据阅读得多少显示长度，还增加了头像旋转特效和如何添加畅言评论系统，主要先介绍三个样式修改，希望大家更多的时间放在原创文章上面，把博客当成自己总结经验和知识的地方，相信你的经验也会带给别人更多的收获！">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2556431-1ebf050498bebb30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lowape.github.io/didiaoyuan.github.io/2017/03/28/Hexo-主题美化/"/>
+
+
+
+
+
+  <title> Hexo 主题美化 | 仙人掌的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?098f4976c7c8b06e2a89213a1bd8b958";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仙人掌的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">喜欢与世无争的清静</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lowape.github.io/didiaoyuan.github.io/2017/03/28/Hexo-主题美化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="didiaoyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仙人掌的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Hexo 主题美化
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-28T20:47:33+08:00">
+                2017-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/03/28/Hexo-主题美化/" class="leancloud_visitors" data-flag-title="Hexo 主题美化">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+          
+    <div class="out-img-topic">
+        <img src=http://ww1.sinaimg.cn/large/006rAlqhly1fe3oftm40cj31hc0u0k5d.jpg class="img-topic">
+    </div>
+
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这一篇主要介绍了 Hexo nexT 主题的美化，添加了如何修改标题栏上面的进度条，进度条根据阅读得多少显示长度，还增加了头像旋转特效和如何添加畅言评论系统，主要先介绍三个样式修改，希望大家更多的时间放在原创文章上面，把博客当成自己总结经验和知识的地方，相信你的经验也会带给别人更多的收获！<br><a id="more"></a></p>
+<h2 id="头像旋转"><a href="#头像旋转" class="headerlink" title="头像旋转"></a>头像旋转</h2><p>先找到位于<br> source/css/_common/components/sidebar/sidebar-author.syl<br>模板文件里侧边栏头像的样式<br>.site-author-image<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">.site-author-image &#123;</div><div class="line">    display: block;</div><div class="line">    margin: 0 auto;</div><div class="line">    padding: $site-author-image-padding;</div><div class="line">    max-width: $site-author-image-width;</div><div class="line">    height: $site-author-image-height;</div><div class="line">    border: $site-author-image-border-width solid $site-author-image-border-color;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>通过修改 border-radius 属性就可以改图片四个角的圆角,再加上属性变化的动画效果.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.site-author-image &#123;</div><div class="line">    border-radius: 50%;</div><div class="line">    -webkit-border-radius: 50%;</div><div class="line">    -moz-border-radius: 50%;</div><div class="line">    transition: 1.4s all;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>添加 .site-author-image:hover 样式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.site-author-image:hover &#123;</div><div class="line">    -webkit-transform: rotate(360deg);</div><div class="line">    -moz-transform: rotate(360deg);</div><div class="line">    -ms-transform: rotate(360deg);</div><div class="line">    -transform: rotate(360deg);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>完成！</p>
+<hr>
+<h2 id="页面加载进度条"><a href="#页面加载进度条" class="headerlink" title="页面加载进度条"></a>页面加载进度条</h2><p>获取提供了 nprogress.css 和 nprogress.js 两个文件<a href="https://github.com/rstacruz/nprogress" target="_blank" rel="external">获取代码</a><br>这两个文件加进  source\lib\nprogress\  目录下<br>在  layout/_partials/head.swig  模板中加入  nprogress.css:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&#123;% set nprogress_uri = url_for(theme.vendors._internal + &apos;/nprogress/nprogress.css&apos;) %&#125;</div><div class="line">&lt;link href=&quot;&#123;&#123; nprogress_uri &#125;&#125;&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<p>在 layout/_scripts/vendors.swig 模板中加入 nprogress.js:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% set js_vendors.nprogress   = &apos;nprogress/nprogress.js&apos; %&#125;</div></pre></td></tr></table></figure></p>
+<p>在 source\js\custom.js 里添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(document).ready(function () &#123;</div><div class="line">    NProgress.start();</div><div class="line">    window.onload = function () &#123;</div><div class="line">        NProgress.done();</div><div class="line">    &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>完成！</p>
+<hr>
+<h2 id="添加畅言评论系统"><a href="#添加畅言评论系统" class="headerlink" title="添加畅言评论系统"></a>添加畅言评论系统</h2><p><strong>在这之前，我们得说一下，如果网站没有ICP申报的只有15天的试用期，但是由于多说服务关闭，在国内的评论系统，也就<a href="http://changyan.kuaizhan.com/" target="_blank" rel="external">畅言</a>(畅言欠我一个广告费)看起来不错，具体的需要你们自己斟酌。</strong></p>
+<p>在这里我们要说一个畅言网站的一个<strong>坑</strong>，这个坑就是你注册的其实是<a href="https://www.kuaizhan.com/" target="_blank" rel="external">快站</a>的账号,当你保存畅言的网站下次登陆的时候，其实你是登不上去的，只有从快站登陆并且登陆后才能切换。<br>（说了一堆废话，只是不想让你们入我的坑，傻傻的再敲账号和密码/(ㄒoㄒ)/~~）</p>
+<p>###主题配置文件<br>next主题的配置文件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#changyan</div><div class="line">//畅言在后台管理提供的 需要复制粘贴到下面</div><div class="line">changyan_appid:</div><div class="line">changyan_appkey:</div></pre></td></tr></table></figure></p>
+<h4 id="添加畅言评论框"><a href="#添加畅言评论框" class="headerlink" title="添加畅言评论框"></a>添加畅言评论框</h4><p>  添加文件layout/_scripts/third-party/comments/changyan.swig<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&#123;% if theme.changyan_appid and theme.changyan_appkey %&#125;</div><div class="line">	&#123;% if is_home() %&#125;</div><div class="line">		&lt;script id=&quot;cy_cmt_num&quot; src=&quot;https://changyan.sohu.com/upload/plugins/plugins.list.count.js?clientId=&#123;&#123;theme.changyan_appid&#125;&#125;&quot;&gt;&lt;/script&gt;</div><div class="line">	&#123;% else %&#125;</div><div class="line">		 &lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">		(function()&#123;</div><div class="line">		var appid = &apos;&#123;&#123;theme.changyan_appid&#125;&#125;&apos;;</div><div class="line">		var conf = &apos;&#123;&#123;theme.changyan_appkey&#125;&#125;&apos;;</div><div class="line">		var width = window.innerWidth || document.documentElement.clientWidth;</div><div class="line">		if (width &lt; 960) &#123;</div><div class="line">		window.document.write(&apos;&lt;script id=&quot;changyan_mobile_js&quot; charset=&quot;utf-8&quot; type=&quot;text/javascript&quot; src=&quot;https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=&apos; + appid + &apos;&amp;conf=&apos; + conf + &apos;&quot;&gt;&lt;\/script&gt;&apos;); &#125; else &#123; var loadJs=function(d,a)&#123;var c=document.getElementsByTagName(&quot;head&quot;)[0]||document.head||document.documentElement;var b=document.createElement(&quot;script&quot;);b.setAttribute(&quot;type&quot;,&quot;text/javascript&quot;);b.setAttribute(&quot;charset&quot;,&quot;UTF-8&quot;);b.setAttribute(&quot;src&quot;,d);if(typeof a===&quot;function&quot;)&#123;if(window.attachEvent)&#123;b.onreadystatechange=function()&#123;var e=b.readyState;if(e===&quot;loaded&quot;||e===&quot;complete&quot;)&#123;b.onreadystatechange=null;a()&#125;&#125;&#125;else&#123;b.onload=a&#125;&#125;c.appendChild(b)&#125;;loadJs(&quot;https://changyan.sohu.com/upload/changyan.js&quot;,function()&#123;window.changyan.api.config(&#123;appid:appid,conf:conf&#125;)&#125;); &#125; &#125;)(); &lt;/script&gt;</div><div class="line">		&lt;script type=&quot;text/javascript&quot; src=&quot;https://assets.changyan.sohu.com/upload/plugins/plugins.count.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&#123;% endif %&#125;</div><div class="line">&#123;% endif %&#125;</div></pre></td></tr></table></figure></p>
+<h6 id="注意：前面忘记说了，新建的文件定要保证是UTF-8格式，全英文可能没事，但是如果文件中有中文就需要注意了"><a href="#注意：前面忘记说了，新建的文件定要保证是UTF-8格式，全英文可能没事，但是如果文件中有中文就需要注意了" class="headerlink" title="注意：前面忘记说了，新建的文件定要保证是UTF-8格式，全英文可能没事，但是如果文件中有中文就需要注意了."></a>注意：前面忘记说了，新建的文件定要保证是UTF-8格式，全英文可能没事，但是如果文件中有中文就需要注意了.</h6><p>修改文件 layout/_partials/comments.swig,在id为 comments 的div中最后增加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&#123;% elseif theme.changyan_appid and theme.changyan_appkey %&#125;</div><div class="line">        &lt;div id=&quot;SOHUCS&quot; &gt;&lt;/div&gt;</div></pre></td></tr></table></figure></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2556431-1ebf050498bebb30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666" alt=""></p>
+<p>注意放的位置</p>
+<h5 id="增加畅言评论调用"><a href="#增加畅言评论调用" class="headerlink" title="增加畅言评论调用"></a>增加畅言评论调用</h5><p>修改  layout/_scripts/third-party/comments.swig  ，最底下增加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% include &apos;./comments/changyan.swig&apos; %&#125;</div></pre></td></tr></table></figure></p>
+<h5 id="增加评论统计数"><a href="#增加评论统计数" class="headerlink" title="增加评论统计数"></a>增加评论统计数</h5><p>修改layout/_macro/post.swig,增加如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&#123;% elseif theme.changyan_appid and theme.changyan_appkey %&#125;</div><div class="line">	&lt;!--noindex--&gt;</div><div class="line">	&lt;span class=&quot;post-comments-count&quot;&gt;</div><div class="line">	&lt;span class=&quot;post-meta-divider&quot;&gt;|&lt;/span&gt;</div><div class="line">	&lt;span class=&quot;post-meta-item-icon&quot;&gt;</div><div class="line">	  &lt;i class=&quot;fa fa-comment-o&quot;&gt;&lt;/i&gt;</div><div class="line">	&lt;/span&gt;</div><div class="line">	&#123;% if is_post() %&#125;</div><div class="line">	    &lt;a href=&quot;&#123;&#123; url_for(post.path) &#125;&#125;#SOHUCS&quot; itemprop=&quot;discussionUrl&quot;&gt;</div><div class="line">	      &lt;span id=&quot;changyan_count_unit&quot; class=&quot;post-comments-count hc-comment-count&quot; data-xid=&quot;&#123;&#123; post.path &#125;&#125;&quot; itemprop=&quot;commentsCount&quot;&gt;&lt;/span&gt;</div><div class="line">	    &lt;/a&gt;</div><div class="line">	&#123;% else %&#125;</div><div class="line">	    &lt;a href=&quot;&#123;&#123; url_for(post.path) &#125;&#125;#SOHUCS&quot; itemprop=&quot;discussionUrl&quot;&gt;</div><div class="line">	    &lt;span id = &quot;url::&#123;&#123; post.permalink &#125;&#125;&quot; class = &quot;cy_cmt_count&quot; data-xid=&quot;&#123;&#123; post.path &#125;&#125;&quot; itemprop=&quot;commentsCount&quot; &gt;&lt;/span&gt;</div><div class="line">	    &lt;/a&gt;</div><div class="line">	&#123;% endif %&#125;</div></pre></td></tr></table></figure></p>
+<p>放入到div 中间 即可  如果有添加 <a href="https://leancloud.cn/" target="_blank" rel="external">leanCould</a>用户统计的，可以定位ctrl+F ‘leanCould’ 放到上面即可如图：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/2556431-fbea453108ac845d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/666" alt=""></p>
+<p>一切ok！</p>
+<h4 id="文章配图"><a href="#文章配图" class="headerlink" title="文章配图"></a>文章配图</h4><p>主要实现的就是在标题和摘要中间，插进一张Logo图片，而当点击进入后，就不会再显示这个logo图片了。原文地址：Hexo主题的数据封装，样式渲染和扩展实例。</p>
+<h5 id="css样式"><a href="#css样式" class="headerlink" title="css样式"></a>css样式</h5><p>hexo/themes/next/source/css/: 是next主题的样式文件，决定主题的外观。<br>hexo/themes/next/source/css/main.styl：汇总css文件夹中所有的样式。<br>hexo/themes/next/source/css/ _custom/custom.styl：是空的，专门让开发者扩展。<br>需要在custom.styl里为图片设计一个专用容器。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//图片外部的容器方框</span></div><div class="line">.out-img-topic &#123;</div><div class="line">  display: block;</div><div class="line">  max-height:<span class="number">300</span>px;</div><div class="line">  margin-bottom: <span class="number">24</span>px;</div><div class="line">  overflow: hidden;</div><div class="line">&#125;</div><div class="line"><span class="comment">//图片</span></div><div class="line">img.img-topic &#123;</div><div class="line">  display: block ;</div><div class="line">  margin-left: <span class="number">.7</span>em;</div><div class="line">  margin-right: <span class="number">.7</span>em;</div><div class="line">  padding: <span class="number">0</span>;</div><div class="line">  float: right;</div><div class="line">  clear: right;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里图片外部的容器用来限制图片显示的大小，最大的高度为300px，overflow: hidden;让多余部分隐藏。margin-bottom: 24px;确保图片和文章摘要部分空出一定空间。</p>
+<h5 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h5><p>修改 /themes/next/layout/ _macro/post.swig ，在 if is_index 与 if post.description and theme.excerpt_description 之间添加以下代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;% <span class="keyword">if</span> post.images %&#125;</div><div class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"out-img-topic"</span>&gt;</div><div class="line">        &lt;img src=&#123;&#123; post.images &#125;&#125; <span class="class"><span class="keyword">class</span></span>=<span class="string">"img-topic"</span>&gt;</div><div class="line">    &lt;<span class="regexp">/div&gt;</span></div><div class="line"><span class="regexp">&#123;% endif %&#125;</span></div></pre></td></tr></table></figure>
+<h5 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h5><p>在 /scaffolds/post.md ，加一个images字段，那么在创建新的文章时，填的图片地址就会一直作为文章的一个属性被传递。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">title: &#123;&#123; title &#125;&#125;</div><div class="line">date: &#123;&#123; date &#125;&#125;</div><div class="line">categories:</div><div class="line">tags:</div><div class="line">images: <span class="string">"/images/摘要配图/"</span></div></pre></td></tr></table></figure></p>
+<p>推荐几个其他主题美化的链接：<br><a href="http://www.dingxuewen.com/2017/03/01/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%AA%E6%80%A7%E5%8C%96%E8%AE%BE%E7%BD%AE%E4%B8%80/" target="_blank" rel="external">Hexo搭建博客的个性化设置一</a><br><a href="http://www.dingxuewen.com/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%AA%E6%80%A7%E5%8C%96%E8%AE%BE%E7%BD%AE%E4%BA%8C/" target="_blank" rel="external">Hexo搭建博客的个性化设置二</a><br><a href="http://www.dingxuewen.com/2017/03/11/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%9A%84%E4%B8%AA%E6%80%A7%E5%8C%96%E8%AE%BE%E7%BD%AE%E4%B8%89/" target="_blank" rel="external">Hexo搭建博客的个性化设置三</a></p>
+<p>如果在搭建有问题的童鞋，可以给我留言，我理解你们那种出现问题想要快点解决的心，我自己之所以开始坚持写文章，是希望能给别人，更多的借鉴！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>(*^▽^*)</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.jpg" alt="didiaoyuan WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.jpg" alt="didiaoyuan Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/28/为什么要写博客？/" rel="next" title="为什么要写博客？">
+                <i class="fa fa-chevron-left"></i> 为什么要写博客？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/30/Android-音频播放（一）/" rel="prev" title="Android-音频播放（一）">
+                Android-音频播放（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMTExMy83NjYy"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.jpg"
+               alt="didiaoyuan" />
+          <p class="site-author-name" itemprop="name">didiaoyuan</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">68</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LowApe" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5904420225/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#头像旋转"><span class="nav-number">1.</span> <span class="nav-text">头像旋转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面加载进度条"><span class="nav-number">2.</span> <span class="nav-text">页面加载进度条</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加畅言评论系统"><span class="nav-number">3.</span> <span class="nav-text">添加畅言评论系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加畅言评论框"><span class="nav-number">3.0.1.</span> <span class="nav-text">添加畅言评论框</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#注意：前面忘记说了，新建的文件定要保证是UTF-8格式，全英文可能没事，但是如果文件中有中文就需要注意了"><span class="nav-number">3.0.1.0.1.</span> <span class="nav-text">注意：前面忘记说了，新建的文件定要保证是UTF-8格式，全英文可能没事，但是如果文件中有中文就需要注意了.</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增加畅言评论调用"><span class="nav-number">3.0.1.1.</span> <span class="nav-text">增加畅言评论调用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增加评论统计数"><span class="nav-number">3.0.1.2.</span> <span class="nav-text">增加评论统计数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文章配图"><span class="nav-number">3.0.2.</span> <span class="nav-text">文章配图</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#css样式"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">css样式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#渲染"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">渲染</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模板"><span class="nav-number">3.0.2.3.</span> <span class="nav-text">模板</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">didiaoyuan</span>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HLr79H4SdCjTW8X3Xl26bULP-gzGzoHsz", "PuvoRJAfnSxWgW1llJxycx9f");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
