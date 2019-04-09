@@ -510,27 +510,6 @@ var _hmt = _hmt || [];
     <div>
       
         
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>(*^▽^*)</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="/images/weixin.jpg" alt="didiaoyuan WeChat Pay"/>
-          <p>微信打赏</p>
-        </div>
-      
-      
-        <div id="alipay" style="display: inline-block">
-          <img id="alipay_qr" src="/images/zhifubao.jpg" alt="didiaoyuan Alipay"/>
-          <p>支付宝打赏</p>
-        </div>
-      
-    </div>
-  </div>
-
 
       
     </div>
@@ -866,7 +845,7 @@ var _hmt = _hmt || [];
   <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 
   <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-
+  <script src="/js/md5.min.js"></script>
    <script type="text/javascript">
         var gitalk = new Gitalk({
           clientID: '2822591ce224c56e718f',
@@ -874,7 +853,7 @@ var _hmt = _hmt || [];
           repo: 'didiaoyuan.github.io',
           owner: 'LowApe',
           admin: ['LowApe'],
-          id: location.pathname,
+          id: md5(location.pathname),
           labels: 'gitalk'.split(',').filter(l => l),
           perPage: 15,
           pagerDirection: 'last',
