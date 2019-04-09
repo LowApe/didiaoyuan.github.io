@@ -1,0 +1,1139 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="仙人掌的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这个算法总结梳理了半个月,虽然痛苦但是打通了好多个点,我认为最难的点在如何求最大长度值表,不管是PMT表还是next表,都是辅助我们求解问题,如果能看懂主要原理和流程的同学,我认为其实理解了KMP 就是不知道怎么实现?为什么这样实现?  暴力匹配 最简单的是使用暴力匹配,也就是不管前面匹配了多少位,只要发生了不匹配,主串(指针) i 就要回溯到开始的下一位继续匹配,这边代码就不放了=&amp;gt;暴力">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KMP字符串搜索算法">
+<meta property="og:url" content="https://lowape.github.io/didiaoyuan.github.io/2019/04/10/KMP字符串搜索算法/index.html">
+<meta property="og:site_name" content="仙人掌的博客">
+<meta property="og:description" content="这个算法总结梳理了半个月,虽然痛苦但是打通了好多个点,我认为最难的点在如何求最大长度值表,不管是PMT表还是next表,都是辅助我们求解问题,如果能看懂主要原理和流程的同学,我认为其实理解了KMP 就是不知道怎么实现?为什么这样实现?  暴力匹配 最简单的是使用暴力匹配,也就是不管前面匹配了多少位,只要发生了不匹配,主串(指针) i 就要回溯到开始的下一位继续匹配,这边代码就不放了=&amp;gt;暴力">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1g1onlwz9klj30bn05bq2v.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1g1hhb67w8jj30fr05tweh.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1g1hhd94u6yj30e504nmx3.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1g1wt46wir5j30dv0fadg1.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1g1wt4gzjz9j30eh08rmx6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1g1hiuttf8gj30gh06zglq.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1g1wyt1mr2nj30kq07wwfq.jpg">
+<meta property="og:updated_time" content="2019-04-09T19:09:00.226Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KMP字符串搜索算法">
+<meta name="twitter:description" content="这个算法总结梳理了半个月,虽然痛苦但是打通了好多个点,我认为最难的点在如何求最大长度值表,不管是PMT表还是next表,都是辅助我们求解问题,如果能看懂主要原理和流程的同学,我认为其实理解了KMP 就是不知道怎么实现?为什么这样实现?  暴力匹配 最简单的是使用暴力匹配,也就是不管前面匹配了多少位,只要发生了不匹配,主串(指针) i 就要回溯到开始的下一位继续匹配,这边代码就不放了=&amp;gt;暴力">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/006rAlqhly1g1onlwz9klj30bn05bq2v.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lowape.github.io/didiaoyuan.github.io/2019/04/10/KMP字符串搜索算法/"/>
+
+
+
+
+
+  <title> KMP字符串搜索算法 | 仙人掌的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?291377b84feb4613f63b24de9690bbea";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">仙人掌的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">喜欢与世无争的清静</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://lowape.github.io/didiaoyuan.github.io/2019/04/10/KMP字符串搜索算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="didiaoyuan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/me.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仙人掌的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                KMP字符串搜索算法
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-10T03:08:45+08:00">
+                2019-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/04/10/KMP字符串搜索算法/" class="leancloud_visitors" data-flag-title="KMP字符串搜索算法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>这个算法总结梳理了半个月,虽然痛苦但是打通了好多个点,我认为最难的点在如何求<code>最大长度值表</code>,不管是<code>PMT表</code>还是<code>next表</code>,都是辅助我们求解问题,如果能看懂主要原理和流程的同学,我认为其实理解了KMP 就是不知道怎么实现?为什么这样实现?</p>
+</blockquote>
+<h1 id="暴力匹配"><a href="#暴力匹配" class="headerlink" title="暴力匹配"></a>暴力匹配</h1><blockquote>
+<p>最简单的是使用暴力匹配,也就是不管前面匹配了多少位,只要发生了不匹配,主串(指针) i 就要回溯到开始的下一位继续匹配,这边代码就不放了=&gt;<a href="https://github.com/LowApe/JavaAlgorithmImplementation/blob/master/src/BruteForceStringMatching.java" target="_blank" rel="external">暴力破解字符串匹配代码</a></p>
+</blockquote>
+<h1 id="KMP-算法"><a href="#KMP-算法" class="headerlink" title="KMP 算法"></a>KMP 算法</h1><blockquote>
+<p>KMP 算法通过匹配<code>要搜索字符串的子串</code>寻找不匹配前<code>相同前缀的位置</code>来提高效率,利用已经部分匹配这个有效信息，保持i指针不回溯，通过修改j指针，让模式串尽量地移动到有效的位置。下面举个例子</p>
+</blockquote>
+<p>例如: 主串: asdasdasdadasda<br><br>搜索字符串:asdasb<br></p>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1g1onlwz9klj30bn05bq2v.jpg" alt=""></p>
+<h2 id="那么什么是最大长度串"><a href="#那么什么是最大长度串" class="headerlink" title="那么什么是最大长度串?"></a>那么什么是最大长度串?</h2><p>基本流程通过上面了解,我们首先需要找到<strong>不匹配位置前,子串的一个规律,从图中我们发现,这个子串有相同的内容,而我们需要移动的就是第二个相同的位置</strong>,</p>
+<blockquote>
+<p>不着急,我还需要通过具体描述来说明.<br>根据上图具体说明:当 i 和 j 下标的数据不相等(s[i]!=p[j]) 具体值使 d!=c,然后找到子串”a s d a s”,有个<code>相同连续且最长字符串</code>的地方”as”,这个子串(说的是”a s d a s”)已经是匹配了的,所以整个搜索串移动到第二个”as”的位置.</p>
+</blockquote>
+<p>那么也就是说,当我们发生不匹配的时候,就要查看子串有没有这个最大长度串,如果没有,整体移动到 i 之后,如果有,<strong>j 就移动到最大长度串之后的位置</strong>(因为最大长度串是匹配的,所以从它后以为开始比较)</p>
+<p>整个流程得到一个小公式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">j=PMT[j-1]</div><div class="line">j:需要比较的位置(下一个比较的位置)</div><div class="line">PMT:理解为发生不匹配位置前的`匹配串`最大长度值的数组(后面会说怎么求)</div><div class="line">j-1:失配前的最大长度值下标</div></pre></td></tr></table></figure>
+<p>综上我们需要得到一个数组,存放最大长度值,<code>这个数组就是核心部分</code>.有了这个表,就能知道比较的下一个位置,所有问题好解决了</p>
+<hr>
+<h2 id="部分匹配表-PMT"><a href="#部分匹配表-PMT" class="headerlink" title="部分匹配表-PMT"></a>部分匹配表-PMT</h2><p>那如何求这个最大长度的串呢?从而求出最大长度值呢?:<br>通过前后缀匹配的方式:<br>正确前缀: “ababa” 的正确前缀除最后一个之前的分解字符串:”a”,”ab”,”aba”,”abab”;<br>正确后缀:”ababa” 的正确后缀除第一个之前的分解字符串:”a”,”ba”,”aba”,”baba”;</p>
+<p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1g1hhb67w8jj30fr05tweh.jpg" alt=""></p>
+<p>部分匹配值=前后缀<code>交集</code>最长那个字符串的个数(上面的前后缀匹配得有”a”,”aba” 最大那个长度就是 3)<br><img src="http://ww1.sinaimg.cn/large/006rAlqhly1g1hhd94u6yj30e504nmx3.jpg" alt=""></p>
+<blockquote>
+<p>前缀和后缀数组交集中最长的串的个数,就是最大长度值,那如何求这个集合?下面是代码,其中有一个概念在代码之后讲解.</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PMT</span> </span>&#123;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span>[] pmt;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getPMT</span><span class="params">(<span class="keyword">char</span>[] s,<span class="keyword">char</span>[] p)</span></span>&#123;</div><div class="line">        <span class="keyword">int</span> i=<span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> j=<span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> sLen = s.length;</div><div class="line">        <span class="keyword">int</span> pLen = p.length;</div><div class="line">        <span class="keyword">while</span> (i&lt;sLen&amp;&amp;j&lt;pLen)&#123;</div><div class="line">            <span class="comment">//j==0 遗漏第一位没有比较</span></div><div class="line"><span class="comment">//            表示没有最大长度值,整体 i 和 j 向后移</span></div><div class="line">            <span class="keyword">if</span>(j==-<span class="number">1</span>||s[i]==p[j])&#123;</div><div class="line">                i++;</div><div class="line">                j++;</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                <span class="comment">//如果 s[i]!=p[j] 查看最大长度值</span></div><div class="line">                j--;</div><div class="line">                <span class="keyword">if</span>(j==-<span class="number">1</span>)&#123;</div><div class="line">                    <span class="keyword">continue</span>;</div><div class="line">                &#125;<span class="keyword">else</span>&#123;</div><div class="line">                    j=pmt[j];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(j==pLen)&#123;</div><div class="line">            <span class="keyword">return</span> i-j;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getMatchLength</span><span class="params">(<span class="keyword">char</span>[] p,<span class="keyword">int</span> pmt[])</span></span>&#123;</div><div class="line">        <span class="comment">//k是最大长度值 初始值0表示没有最大长度值</span></div><div class="line">        <span class="keyword">int</span> k=<span class="number">0</span>;</div><div class="line">        <span class="keyword">int</span> pLen = p.length;</div><div class="line">        <span class="comment">//j初识下标为1,因为第一位没有前后缀,p[k],p[j]指向同一个数</span></div><div class="line">        <span class="keyword">int</span> j= <span class="number">1</span>;</div><div class="line">        pmt[<span class="number">0</span>]=<span class="number">0</span>;</div><div class="line">        <span class="comment">//循环目的是把整个搜素串的各个位置的最大长度值求出来</span></div><div class="line">        <span class="keyword">while</span>(j&lt;pLen)&#123;</div><div class="line"></div><div class="line">            <span class="keyword">if</span>(p[j]==p[k])&#123;</div><div class="line">                <span class="comment">//如果 p[j]==p[k],表示当前符合前后缀k++,赋值</span></div><div class="line">                k++;</div><div class="line">                pmt[j]=k;</div><div class="line"></div><div class="line">            &#125;<span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">//如果 p[j]!=p[k],表示没有最大长度值,赋值k</span></div><div class="line">                k=pmt[k];</div><div class="line">            &#125;</div><div class="line">            j++;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPMT</span></span>&#123;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">            String s=<span class="string">"dabadcabecbaabadcabfasdads"</span>;</div><div class="line">            String p=<span class="string">"abadcabf"</span>;</div><div class="line">            pmt = <span class="keyword">new</span> <span class="keyword">int</span>[p.length()];</div><div class="line">            getMatchLength(p.toCharArray(),pmt);</div><div class="line">            System.out.println(<span class="string">"PMT 局部匹配表"</span>);</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pmt.length; i++) &#123;</div><div class="line">                System.out.print(pmt[i]+<span class="string">"\t"</span>);</div><div class="line">            &#125;</div><div class="line">            System.out.print(<span class="string">"\n"</span>);</div><div class="line">            System.out.println(<span class="string">"首次出现的位置"</span>+getPMT(s.toCharArray(),p.toCharArray()));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="为什么进行p-k-p-j-判断"><a href="#为什么进行p-k-p-j-判断" class="headerlink" title="为什么进行p[k]==p[j]判断?"></a>为什么进行p[k]==p[j]判断?</h3><p>假设存在 k 值,<code>k为所求最大长度值</code>,则应该满足 <code>p[0~k-1]==p[j-k~j-1]</code>,如果p[k]==p[j] 说明前面那个式子 k 不是最大长度值,如果 p[k]!=p[j] ,k就是最大长度值,有点绕口,<br>为什么是这个等式:我们思考上面的特点,不管这个最大长度串有多长,前后缀都是<code>相同,连续且最长</code>,<code>p[0~k-1]</code>为前缀<code>p[j-k~j-1]</code>为后缀,注意j是不匹配位置所以这里是 j-1,p[k] 就是前缀下一个位置,p[j] 就是后缀下一个位置.</p>
+<p>通过下图理解上面的公式:<br><img src="http://ww1.sinaimg.cn/large/006rAlqhly1g1wt46wir5j30dv0fadg1.jpg" alt=""><br><img src="http://ww1.sinaimg.cn/large/006rAlqhly1g1wt4gzjz9j30eh08rmx6.jpg" alt=""></p>
+<blockquote>
+<p>说明:图上的例子很短,所以造成 k 值并不在前后缀中间,这没关系,一定要理解,我们是要求出最大长度值,也就是到 <code>p[k]!=p[j]</code></p>
+</blockquote>
+<hr>
+<h2 id="从部分匹配表推出-next-数组"><a href="#从部分匹配表推出-next-数组" class="headerlink" title="从部分匹配表推出 next 数组"></a>从部分匹配表推出 next 数组</h2><p>上面就是 kmp 的一个核心思想,那现在优化这个 pmt 数组</p>
+<p>通过<code>部分匹配表</code> 我们觉得每次去找上一个的最大长度值比较麻烦,于是我们直接将PMT数组整体后移1位(且首值赋值为-1)得到<code>next数组</code>,</p>
+<p><strong>1. j 从0开始计数,所以j就是已经匹配的个数</strong></p>
+<p><strong>2. 当具体某个位置不匹配,通过next数组对应的值,就是失配前一个的最大长度值</strong></p>
+<p>这两个也就是为什么 PMT 转换成 next 的主要原因,我认为还是因为这样好算,不用考虑向前移动一个得到值<br><img src="http://ww1.sinaimg.cn/large/006rAlqhly1g1hiuttf8gj30gh06zglq.jpg" alt=""></p>
+<hr>
+<h2 id="3-具体代码实现过程"><a href="#3-具体代码实现过程" class="headerlink" title="3. 具体代码实现过程"></a>3. 具体代码实现过程</h2><p>下面给出原理的代码,先忽略next数组(把他理解为求得我们要移动的位置),还有一个<code>j==-1</code> 先理解为没有可匹配的子串<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">KMPSearch</span><span class="params">(<span class="keyword">char</span>[] s,<span class="keyword">char</span>[] p)</span></span>&#123;</div><div class="line">       <span class="keyword">int</span> i=<span class="number">0</span>;</div><div class="line">       <span class="keyword">int</span> j=<span class="number">0</span>;</div><div class="line">       <span class="keyword">int</span> sLen=s.length;</div><div class="line">       <span class="keyword">int</span> pLen=p.length;</div><div class="line">       <span class="keyword">while</span> (i&lt;sLen &amp;&amp; j&lt;pLen)&#123;</div><div class="line">           <span class="keyword">if</span>(j==-<span class="number">1</span> || p[j]==s[i])&#123;</div><div class="line">               i++;</div><div class="line">               j++;</div><div class="line"></div><div class="line">           &#125;<span class="keyword">else</span>&#123;</div><div class="line">               <span class="comment">//关键词比较的位置</span></div><div class="line">               j=next[j];</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">if</span>(j==pLen)&#123;</div><div class="line">           <span class="keyword">return</span> i-j;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> -<span class="number">1</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getNext</span><span class="params">(<span class="keyword">char</span>[] p,<span class="keyword">int</span> next[])</span></span>&#123;</div><div class="line">    <span class="comment">// k 是最大长度值,通过下面求出k的值并存入数组</span></div><div class="line">        <span class="keyword">int</span> k=-<span class="number">1</span>;</div><div class="line">        <span class="keyword">int</span> pLen=p.length;</div><div class="line"></div><div class="line">        next[<span class="number">0</span>]=-<span class="number">1</span>;</div><div class="line">        <span class="keyword">int</span> j=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span> (j&lt;pLen-<span class="number">1</span>)&#123;</div><div class="line">            <span class="comment">//当前或</span></div><div class="line">            <span class="keyword">if</span>(k==-<span class="number">1</span>||p[j]==p[k])&#123;</div><div class="line">                ++k;</div><div class="line">                ++j;</div><div class="line">                next[j]=k;</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                k = next[k];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="1-为什么是-j-next-j"><a href="#1-为什么是-j-next-j" class="headerlink" title="1. 为什么是  j=next[j]?"></a>1. 为什么是  <code>j=next[j]</code>?</h3><p>之前的公式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">j=PMT[j-1]</div><div class="line">因为next 数组整体后移一位,所有j刚好就是失配前最大长度值</div><div class="line">j=next[j]</div></pre></td></tr></table></figure></p>
+<h3 id="2-为什么next-0-1"><a href="#2-为什么next-0-1" class="headerlink" title="2. 为什么next[0]= -1 ?"></a>2. 为什么<code>next[0]= -1</code> ?</h3><p> next 数组[0] 索引下的值为 -1,我是这样理解的,当整体向后移动,第一位的值表示的含义就不是<strong>失配前最大长度值</strong>,因为在它前面没有子串,所有这表示没有可以匹配的子串,也就是意味无法找子串的移动位置,那找不到,就整体向后移,所有<code>next[0]= -1</code>是一个标志量,标志我们主串 i 向后移动.</p>
+<blockquote>
+<p>别人的解释:当有匹配的位置就返回它的具体位置，否则返回-1（常用手段）</p>
+</blockquote>
+<h3 id="3-如何理解next-优化-next-j-next-k"><a href="#3-如何理解next-优化-next-j-next-k" class="headerlink" title="3. 如何理解next 优化 next[j]=next[k]?"></a>3. 如何理解next 优化 <code>next[j]=next[k]</code>?</h3><p><img src="http://ww1.sinaimg.cn/large/006rAlqhly1g1wyt1mr2nj30kq07wwfq.jpg" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getNext</span><span class="params">(<span class="keyword">char</span>[] p,<span class="keyword">int</span> next[])</span></span>&#123;</div><div class="line">    <span class="comment">// k 是最大长度值,通过下面求出k的值并存入数组</span></div><div class="line">        <span class="keyword">int</span> k=-<span class="number">1</span>;</div><div class="line">        <span class="keyword">int</span> pLen=p.length;</div><div class="line"></div><div class="line">        next[<span class="number">0</span>]=-<span class="number">1</span>;</div><div class="line">        <span class="keyword">int</span> j=<span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span> (j&lt;pLen-<span class="number">1</span>)&#123;</div><div class="line">            <span class="comment">//当前或</span></div><div class="line">            <span class="keyword">if</span>(k==-<span class="number">1</span>||p[j]==p[k])&#123;</div><div class="line">                ++k;</div><div class="line">                ++j;</div><div class="line">                <span class="comment">/*</span></div><div class="line"><span class="comment">                next 优化</span></div><div class="line"><span class="comment">                */</span></div><div class="line">                <span class="keyword">if</span> (p[j]!=p[k])&#123;</div><div class="line">                    next[j]=k;</div><div class="line">                &#125;<span class="keyword">else</span>&#123;</div><div class="line">                    next[j]=next[k];</div><div class="line">                &#125;</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                k = next[k];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这可能是本文我最不理解的地方,如果有弄懂的小伙伴,可以在<a href="https://blogcode.top/guestbook/" target="_blank" rel="external">博客留言板留言</a>,谢谢了(<em>^__^</em>) 嘻嘻……</p>
+</blockquote>
+<hr>
+<h1 id="难点-list"><a href="#难点-list" class="headerlink" title="难点 list"></a>难点 list</h1><h2 id="1-局部匹配值的理解"><a href="#1-局部匹配值的理解" class="headerlink" title="1. 局部匹配值的理解"></a>1. 局部匹配值的理解</h2><h2 id="2-注意移动位数与直接指向位置-本文全为指向位置"><a href="#2-注意移动位数与直接指向位置-本文全为指向位置" class="headerlink" title="2. 注意移动位数与直接指向位置(本文全为指向位置)"></a>2. 注意移动位数与直接指向位置(本文全为指向位置)</h2><h2 id="3-为什么-next-数组整体向后移位"><a href="#3-为什么-next-数组整体向后移位" class="headerlink" title="3. 为什么 next 数组整体向后移位"></a>3. 为什么 next 数组整体向后移位</h2><h2 id="4-为什么-next-数组-0-索引下的值为-1"><a href="#4-为什么-next-数组-0-索引下的值为-1" class="headerlink" title="4. 为什么 next 数组[0] 索引下的值为 -1"></a>4. 为什么 next 数组[0] 索引下的值为 -1</h2><h2 id="5-获取最大长度值的过程"><a href="#5-获取最大长度值的过程" class="headerlink" title="5. *获取最大长度值的过程"></a>5. <div style="color:red;display:inline">*获取最大长度值的过程<div></div></div></h2><hr>
+<p>参考连接:<br></p>
+<ul>
+<li><a href="https://github.com/LowApe/JavaAlgorithmImplementation" target="_blank" rel="external">所有代码 GitHub</a></li>
+<li><a href="https://blogcode.top/" target="_blank" rel="external">blogcode.top</a></li>
+<li><a href="http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/" target="_blank" rel="external">jakeboxer 英文理解</a><br></li>
+<li><a href="http://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html" target="_blank" rel="external">阮一峰的理解</a><br></li>
+<li><a href="https://blog.csdn.net/v_july_v/article/details/7041827" target="_blank" rel="external">从头到尾彻底理解KMP（2014年8月22日版）</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>(*^▽^*)</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.jpg" alt="didiaoyuan WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.jpg" alt="didiaoyuan Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/28/Java Object类(一)/" rel="next" title="Java Object类(一)">
+                <i class="fa fa-chevron-left"></i> Java Object类(一)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+        <div id="gitalk-container"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/me.jpg"
+               alt="didiaoyuan" />
+          <p class="site-author-name" itemprop="name">didiaoyuan</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">69</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LowApe" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/5904420225/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#暴力匹配"><span class="nav-number">1.</span> <span class="nav-text">暴力匹配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KMP-算法"><span class="nav-number">2.</span> <span class="nav-text">KMP 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#那么什么是最大长度串"><span class="nav-number">2.1.</span> <span class="nav-text">那么什么是最大长度串?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部分匹配表-PMT"><span class="nav-number">2.2.</span> <span class="nav-text">部分匹配表-PMT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么进行p-k-p-j-判断"><span class="nav-number">2.2.1.</span> <span class="nav-text">为什么进行p[k]==p[j]判断?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从部分匹配表推出-next-数组"><span class="nav-number">2.3.</span> <span class="nav-text">从部分匹配表推出 next 数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-具体代码实现过程"><span class="nav-number">2.4.</span> <span class="nav-text">3. 具体代码实现过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-为什么是-j-next-j"><span class="nav-number">2.4.1.</span> <span class="nav-text">1. 为什么是  j=next[j]?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-为什么next-0-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">2. 为什么next[0]= -1 ?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-如何理解next-优化-next-j-next-k"><span class="nav-number">2.4.3.</span> <span class="nav-text">3. 如何理解next 优化 next[j]=next[k]?</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#难点-list"><span class="nav-number">3.</span> <span class="nav-text">难点 list</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-局部匹配值的理解"><span class="nav-number">3.1.</span> <span class="nav-text">1. 局部匹配值的理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-注意移动位数与直接指向位置-本文全为指向位置"><span class="nav-number">3.2.</span> <span class="nav-text">2. 注意移动位数与直接指向位置(本文全为指向位置)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-为什么-next-数组整体向后移位"><span class="nav-number">3.3.</span> <span class="nav-text">3. 为什么 next 数组整体向后移位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-为什么-next-数组-0-索引下的值为-1"><span class="nav-number">3.4.</span> <span class="nav-text">4. 为什么 next 数组[0] 索引下的值为 -1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-获取最大长度值的过程"><span class="nav-number">3.5.</span> <span class="nav-text">5. *获取最大长度值的过程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '2822591ce224c56e718f',
+          clientSecret: '0515150bb1483e57e9555f0fa52f69c15f810b75',
+          repo: 'didiaoyuan.github.io',
+          owner: 'LowApe',
+          admin: ['LowApe'],
+          id: location.pathname,
+          labels: 'gitalk'.split(',').filter(l => l),
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+
+        gitalk.render('gitalk-container')
+       </script>
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="local-search-pop-overlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HLr79H4SdCjTW8X3Xl26bULP-gzGzoHsz", "PuvoRJAfnSxWgW1llJxycx9f");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
